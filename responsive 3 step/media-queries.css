@@ -1,0 +1,28 @@
+@media screen and (max-width: 470px) 	{
+	
+	/*  
+	        adjust for
+	     vertical layout:
+	 SMART PHONE HELD UPRIGHT 
+	 
+	*/
+	
+}
+
+@media screen and (min-width: 471px) and (max-width: 801px) 	{
+	
+	/*  
+	        adjust for
+	  SMART PHONE HORIZONTAL
+	           ~or~
+	   TABLET HELD UPRIGHT 
+	 
+	*/
+	
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+	width: auto\9; /* ie8-9 hack */
+}
