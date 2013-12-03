@@ -1,0 +1,37 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Untitled Document</title>
+
+<script>
+function verifyEmail(){
+var status = false;     
+var emailRegEx = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+     if (document.myform.email1.value.search(emailRegEx) == -1) {
+          alert("Please enter a valid email address.");
+     }
+     else if (document.myform.email1.value != document.myform.email2.value) {
+          alert("Email addresses do not match.  Please retype them to make sure they are the same.");
+     }
+     else {
+          alert("Woohoo!  The email address is in the correct format and they are the same.");
+          status = true;
+     }
+     return status;
+}
+</script>
+</head>
+
+<body>
+<form name="myform">
+Email: <input type="text" name="email1">
+<p><p>
+Please type in your email again: <input type="text" name="email2">
+<p><p>
+<input type="button" onClick="verifyEmail();" value="Check Email Address">
+</form>
+
+</body>
+</html>
