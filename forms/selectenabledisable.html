@@ -1,0 +1,33 @@
+<html>
+<head>
+<title>Untitled Document</title>
+<script type="text/javascript">
+function check_select() {
+	if (document.form1.selection1.value==3) {
+		document.form1.selection2.disabled=true;
+	} else if (document.form1.selection1.value==2) {
+		document.form1.selection2.disabled=false;
+	}
+} 
+</script>
+</head>
+
+<body>
+<form id="form1" name="form1" method="post" action="">
+  <select name="selection1" id = "selection" onChange="check_select();">
+    <option value="" selected  disabled>select</option>
+    <option value="2">enable</option>
+    <option value="3">disable</option>
+  </select>
+  <br>
+  <br>
+  <select name="selection2" id = "selection2" disabled="true">
+    <option value="" selected>select</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+  </select>
+</form>
+</body>
+</html>
