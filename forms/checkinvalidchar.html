@@ -1,0 +1,27 @@
+<html>
+<head>
+<script language="javaScript">
+ 
+function validate_field(field)
+{
+        value=field.value;
+ 
+        var invalids = "!@#$%\"'^&*()~,'<>/?;:\\|[]{}+=`*";
+        for(i=0; i<invalids.length; i++)
+        {
+                if(value.indexOf(invalids.charAt(i)) >= 0 )
+                {
+                        alert("Field '"+field.name+"' Contains Invalid characters");
+                        break;
+                }
+        }
+ 
+}
+</script>
+</head>
+<body>
+<form name="ValidateForm">
+<div id="appendto">Name: <input type="text" name="Name" id="Name" onblur="validate_field(Name)"></div>
+<input type="button" value="Check" onClick="validate_field(Name)"> 
+</body>
+</html>
