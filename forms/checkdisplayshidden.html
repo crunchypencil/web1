@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<head>
+<title>Untitled Document</title>
+</head>
+
+<body>
+
+<script type="text/javascript">
+	function SetHTML(check,type) {
+		if(check==true) document.getElementById(type).style.display = "";
+		else            document.getElementById(type).style.display = "none";
+	}
+</script>
+
+<input type="checkbox" CHECKED onClick="SetHTML(this.checked,'a3')">
+<input type="checkbox" onClick="SetHTML(this.checked,'b3')">
+<input type="checkbox" onClick="SetHTML(this.checked,'c3')">
+
+<span id='a3'> <b> add this </b></span>
+<span id='b3' style="display:none"> <input type="checkbox"><b> or this </b></span>
+<span id="c3" style="display:none"> <input type="checkbox"><b> or even this </b></span>
+
+
+
+</body>
+</html>
