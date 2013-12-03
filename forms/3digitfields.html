@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Split phone input</title>
+		<script type="text/javascript">
+		var p;
+		
+		function next(i) {
+			return function() {
+				//strip non-digits
+				p[i].value=p[i].value.replace(/[^0-9]/g, "");
+				
+				//go forward one box when full, except when on the end box
+				if(p[i].value.length==p[i].size && i<p.length) p[i+1].focus();
+			}
+		}
+
+		function back(i) {
+			return function(e) {
+				//go backward one when empty, except when on the first box
+				if(e.keyCode==8 && p[i].value.length==0 && i>0) p[i-1].focus();
+			}
+		}
+
+		window.onload=function() {
+			p=document.getElementById("phones").getElementsByTagName("input");
+
+			for(var i=0; i<p.length; i++) {
+				p[i].onkeyup=next(i);
+				p[i].onkeydown=back(i);
+			}
+		}
+		</script>
+	</head>
+	<body>
+		<form>
+			<div id="phones">
+				<input type="text" size="3" maxlength="3" name="area">
+				<input type="text" size="3" maxlength="3" name="local1">
+				<input type="text" size="4" maxlength="4" name="local2">
+			</div>
+		</form>
+	</body>
+</html>
