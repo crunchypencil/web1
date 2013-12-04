@@ -12,10 +12,10 @@ tr {
 }
 /* note: these CSS3 pseudo classes require FF 3.1+, Safari 3.1+, or IE8+ */
 tr:nth-of-type(even) { /* even rows */
-    background-color:#eee;
+    	background-color:#eee;
 }
 tr:nth-of-type(1) { /* first row */
-    background-color:#000;
+    	background-color:#000;
 	color:#fff;
 	text-align:center;
 }
@@ -53,7 +53,6 @@ echo viewlog($filename);
 // Close it off
 echo "</td></tr></table>";
 
-exit;
 ?>
 
 </body>
