@@ -1,5 +1,11 @@
-/*
-	PRE-EMPTIVE STANDARD SIZE RESET
+/* 	
+	This css file has everything needed for a 3-stage
+   	responsive layout for phone, tablet and desktop views 
+   	including smooth transitions between.
+*/
+
+/*	
+	PRE-EMPTIVE STANDARD SIZE RESET	
 */
 a, abbr, acronym, address, applet, article, aside, audio,
 b, blockquote, big, body,
@@ -20,23 +26,28 @@ q,
 s, samp, section, small, span, source, strike, strong, sub, sup,
 table, tbody, tfoot, thead, th, tr, tdvideo, tt,
 u, ul, 
-var{
+var {
     background: transparent;
     border: 0 none;
     font-size: 100%;
     margin: 0;
     padding: 0;
-    vertical-align: baseline; }
+    vertical-align: baseline; 
+}
 
 
 /*  
-	      regular css
-		    section
-		  adjust for:
-	 NORMAL DESKTOP LAYOUT 
-	 
+	regular css
+	section
+	adjust for:
+	NORMAL DESKTOP LAYOUT 
 */
 
+html, body {
+	height:100%;
+	margin:0;
+	padding:0;
+}
 
 p, h1, h2, h3 {	/* transitions for affected styles */		
 	-webkit-transition-property: width;
@@ -57,10 +68,9 @@ p, h1, h2, h3 {
 @media screen and (max-width: 470px) 	{
 	
 /*  
-	        adjust for
-	     vertical layout:
-	 SMART PHONE HELD UPRIGHT 
-	 
+	adjust for
+	vertical layout:
+	SMART PHONE HELD UPRIGHT 
 */
 	
 p, h1, h2, h3 {					
@@ -72,12 +82,12 @@ p, h1, h2, h3 {
 @media screen and (min-width: 471px) and (max-width: 801px) 	{
 	
 /*  
-	        adjust for
-	  SMART PHONE HORIZONTAL
-	           ~&~
-	   TABLET HELD UPRIGHT 
-	 
+	adjust for
+	SMART PHONE HORIZONTAL
+	~&~
+	TABLET HELD UPRIGHT 
 */
+
 p, h1, h2, h3 {					
 	font-size:medium;
 }
