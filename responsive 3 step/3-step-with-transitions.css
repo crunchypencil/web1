@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*         
         This css file has everything needed for a 3-stage
         responsive layout for phone, tablet and desktop views 
@@ -6,6 +7,16 @@
 
 /*        
         PRE-EMPTIVE STANDARD SIZE RESET        
+=======
+/* 	
+	This css file has everything needed for a 3-stage
+   	responsive layout for phone, tablet and desktop views 
+   	including smooth transitions between.
+*/
+
+/*	
+	PRE-EMPTIVE STANDARD SIZE RESET	
+>>>>>>> e5cf497c26c535fd0bf8b0d7fc0d065c636a8a2f
 */
 a, abbr, acronym, address, applet, article, aside, audio,
 b, blockquote, big, body,
@@ -37,6 +48,7 @@ var {
 
 
 /*  
+<<<<<<< HEAD
         regular css
         section
         adjust for:
@@ -47,6 +59,18 @@ html, body {
         height:100%;
         margin:0;
         padding:0;
+=======
+	regular css
+	section
+	adjust for:
+	NORMAL DESKTOP LAYOUT 
+*/
+
+html, body {
+	height:100%;
+	margin:0;
+	padding:0;
+>>>>>>> e5cf497c26c535fd0bf8b0d7fc0d065c636a8a2f
 }
 
 p, h1, h2, h3 { /* transitions for affected styles */                
@@ -70,10 +94,16 @@ p, h1, h2, h3 {
 @media screen and (min-width: 471px) and (max-width: 801px)         {
         
 /*  
+<<<<<<< HEAD
         adjust for
         SMART PHONE HORIZONTAL
         ~&~
         TABLET HELD UPRIGHT 
+=======
+	adjust for
+	vertical layout:
+	SMART PHONE HELD UPRIGHT 
+>>>>>>> e5cf497c26c535fd0bf8b0d7fc0d065c636a8a2f
 */
 
 p, h1, h2, h3 {                                        
@@ -86,6 +116,7 @@ p, h1, h2, h3 {
 @media screen and (max-width: 470px)         {
         
 /*  
+<<<<<<< HEAD
         adjust for
         vertical layout:
         SMART PHONE HELD UPRIGHT 
@@ -93,12 +124,29 @@ p, h1, h2, h3 {
         
 p, h1, h2, h3 {                                        
         font-size:xx-small;
+=======
+	adjust for
+	SMART PHONE HORIZONTAL
+	~&~
+	TABLET HELD UPRIGHT 
+*/
+
+p, h1, h2, h3 {					
+	font-size:medium;
+>>>>>>> e5cf497c26c535fd0bf8b0d7fc0d065c636a8a2f
 }
         
 }
 
 img {
+<<<<<<< HEAD
         max-width: 100%;
         height: auto;
         width: auto\9; /* ie8-9 hack */
 }
+=======
+	max-width: 100%;
+	height: auto;
+	width: auto\9; /* ie8-9 hack */
+}
+>>>>>>> e5cf497c26c535fd0bf8b0d7fc0d065c636a8a2f
