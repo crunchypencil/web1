@@ -1,3 +1,18 @@
+p, h1, h2, h3 {					
+					-webkit-transition-property: width;
+					-moz-transition-property: width;
+					transition-property: width;
+					-webkit-transition-duration: 0.5s, 0.5s;
+					-moz-transition-duration: 0.5s, 0.5s;
+					transition-duration: 0.5s, 0.5s; 
+					-webkit-transition-timing function: linear, ease-in;
+					-moz-transition-timing function: linear, ease-in; 
+					transition-timing function: linear, ease-in;
+}
+p, h1, h2, h3 {					
+					font-size:larger
+}
+
 @media screen and (max-width: 470px) 	{
 	
 	/*  
@@ -6,6 +21,10 @@
 	 SMART PHONE HELD UPRIGHT 
 	 
 	*/
+	
+p, h1, h2, h3 {					
+					font-size:smaller
+}
 	
 }
 
