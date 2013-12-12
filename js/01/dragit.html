@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>DragIt</title>
+<script>
+function dragIt(draggableElement, event) {
+ 
+ var x = parseInt(draggableElement.style.left);
+ var y = parseInt(draggableElement.style.top);
+ 
+ var moveX = event.clientX - x;
+ var moveY = event.clientY - y;
+ 
+ document.addEventListener("mousemove", moveEvent, true);
+ document.addEventListener("mouseup", upEvent, true);
+ 
+ event.stopProgagation();
+ event.preventDefault();
+ 
+ function moveEvent(event) {
+  draggableElement.style.left = (event.clientX - moveX) + "px";
+  draggableElement.style.top = (event.clientY - moveY) + "px";
+  event.stopPropagation(); 
+ }
+ 
+ function upEvent(event) {
+  document.removeEventListener("mouseup", upEvent, true);
+  document.removeEventListener("mousemove", moveEvent, true);
+  event.stopPropagation();
+ }
+}
+</script>
+</head>
+<body>
+<div style="background-color:red;color:white;position:absolute;padding:20px;left:100px;top:100px;text-align:center;" onmousedown="dragIt(this, event);">drag me</div>
+</body>
+</html>

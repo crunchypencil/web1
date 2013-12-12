@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Up/Down/Left/Right</title>
+<style>
+#hand{
+ position: absolute;
+ top: 100px;
+ left: 100px;
+}
+#area{
+ position: absolute;
+ top: 100px;
+ left: 100px;
+ width: 500px;
+ height: 500px;
+ background-color: orange;
+}
+</style>
+<script language="JavaScript">
+var hand;
+var handLeft = 100;
+var handTop = 100;
+function init(){
+ hand = document.getElementById('hand');
+ document.onkeydown = keyListener;
+}
+function keyListener(e){
+ if(e.keyCode==37 && handLeft > -6){
+  //LEFT
+  handLeft -= 4;
+  hand.style.left = handLeft + 'px';
+ }
+ if(e.keyCode==39 && handLeft < 390){
+  //RIGHT
+  handLeft += 4;
+  hand.style.left = handLeft + 'px';
+ }
+ if(e.keyCode==38 && handTop > 0){
+  //UP
+  handTop -= 4;
+  hand.style.top = handTop + 'px';
+ }
+ if(e.keyCode==40 && handTop < 370){
+  //DOWN
+  handTop += 4;
+  hand.style.top = handTop + 'px';
+ }
+}
+</script>
+</head>
+<body onLoad="init()">
+<div id="area">
+    <div id="hand">
+        <img src="hand-cursor.png">
+    </div>
+</div>
+</body>
+</html>
