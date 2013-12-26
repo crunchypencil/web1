@@ -32,7 +32,7 @@ function takeOne() {
 		document.getElementById("message").innerHTML = "You have reached the end of the deck.";
 	} else {
 		var ud = upDown(0,1);
-		if (ud==1) {
+		if (ud==1) {  
 			tarotcards[n].image = tarotcards[n].image1;
 			tarotcards[n].interpretation = tarotcards[n].interpretation1;
 		} else {
@@ -40,9 +40,10 @@ function takeOne() {
 			tarotcards[n].image = tarotcards[n].image0;
 			tarotcards[n].interpretation = tarotcards[n].interpretation0;
 		}
-		document.getElementById("message").innerHTML = "<strong>Card:</strong> "+tarotcards[n].card+"<br><strong>Image:</strong> "+tarotcards[n].image+"<br><strong>Description:</strong> "+tarotcards[n].description+"<br><strong>Interpretation:</strong> "+tarotcards[n].interpretation;
+		var cardno = n+1;
+		var cardsleft = tarotcards.length - n-1;
+		document.getElementById("message").innerHTML = "<img src='"+tarotcards[n].image+"' width=300 height=550 align=left hspace=20><h2>"+tarotcards[n].card+"</h2><strong>Description:</strong> "+tarotcards[n].description+"<p><strong>Divinatory Meanings:</strong> "+tarotcards[n].interpretation+"<p>Count: "+cardno+", "+cardsleft+" cards left. "+tarotcards.length+" cards in the deck.";
 
-		document.getElementById("numleft").innerHTML = tarotcards.length - n-1+" cards left.";
 		n++;
 	}
 }
@@ -54,12 +55,11 @@ function upDown(min, max) {
 </script>
 <h3>Pick a card. </h3>
 <form name="myform">
-<p><script>document.write(tarotcards.length);</script> cards in the deck.</p>
 <input name='pick' type='button' value='pick' onclick='takeOne()'> | <input name='reshuffle' type='button' value='reshuffle' onclick='window.location.reload()'>
 </form> 
 </p>
-<p><div id="message"></div></p>
-<p><div id="numleft" style="font-size:small"></div></p>
+<p><div id="message"><img src="back.jpg" width=300 height=550 align=left hspace=20></div></p>
+
 
 </body>
 </html>
