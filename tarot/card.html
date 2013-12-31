@@ -51,11 +51,12 @@ p {
 }
 </style>
 </head>
-<body>
+<body onload="writeCard();">
 <FORM NAME="card">
 <INPUT TYPE="hidden" NAME="val" SIZE="35">
 </form>
 <script>
+
 var locate = window.location;
 document.card.val.value = locate;
 var numval = document.card.val.value;
@@ -66,18 +67,16 @@ function delineate(str){
 	return(str.substring(thevar));
 }
 
-document.write("Variable is " +delineate(numval));
-
-alert(typeof(delineate(numval)));
+//document.write("Variable is " +delineate(numval));
+var m = delineate(numval);
 var n = parseInt(m);
-document.getElementById("cardface").innerHTML = "<img src='"+tarotcards[n].image+"' width=300 height=550 align=left hspace=20>";
-document.getElementById("message").innerHTML = "<h2>"+tarotcards[n].card+"</h2><p><strong>Description:</strong> "+tarotcards[n].description+"</p><p><strong>Divinatory Meanings:</strong> <i>"+tarotcards[n].interpretation1+"</i></p><p><strong>Inverted Meanings:</strong> <i>"+tarotcards[n].interpretation0+"</i></p>";
 
+function writeCard(){
+	document.getElementById("cardface").innerHTML = "<img src='"+tarotcards[n].image+"' width=300 height=550 align=left hspace=20>";
+	document.getElementById("message").innerHTML = "<h2>"+tarotcards[n].card+"</h2><p><strong>Description:</strong> "+tarotcards[n].description+"</p><p><strong>Divinatory Meanings:</strong> <i>"+tarotcards[n].interpretation1+"</i></p><p><strong>Inverted Meanings:</strong> <i>"+tarotcards[n].interpretation0+"</i></p>";
+}
 
 </script>
-<!--<h3>Select any card.</h3>
-<input type="checkbox" onClick="SetHTML(this.checked,'hid')"> test this here<p><hr><p>-->
-
 
 <div id="card">
     <!--<form>
