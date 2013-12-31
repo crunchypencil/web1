@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Tarot Reader - Select a Card</title>
+<script src="tarotcards.js" language="JavaScript" type="text/javascript"></script>
+<style>
+#top {
+	padding:10px;
+	width:100%;
+}
+#card {
+	float:left;
+	padding:10px;
+	background-color:#fff;
+	text-align:center;
+}
+#text {
+	float:left;
+	padding:10px;
+	margin:60px 10px 0px 10px;
+	background-color:#fff;
+	width:500px;
+}
+select {
+    padding: 10px 20px 10px 20px;
+    margin: 0;
+    -webkit-border-radius:20px;
+    -moz-border-radius:20px;
+    border-radius:20px;
+    background: #ff9900;
+    border:none;
+    outline:none;
+    display: inline-block;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
+    cursor:pointer;
+	font: 16px/1.0 Arial, Helvetica, sans-serif;
+}
+h2 {
+	font: 30px/1.0 Papyrus, Georgia, "Times New Roman", Times, serif;
+	/*font: 30px/1.0 Papyrus, Georgia, "Times New Roman", Times, serif;*/
+	margin:0 0 35px 0;
+	padding:0;
+}
+p {
+	font: 16px/1.6 Georgia, "Times New Roman", Times, serif;
+	margin:25px 0;
+	padding:0;
+}
+</style>
+</head>
+<body>
+<FORM NAME="card">
+<INPUT TYPE="hidden" NAME="val" SIZE="35">
+</form>
+<script>
+var locate = window.location;
+document.card.val.value = locate;
+var numval = document.card.val.value;
+
+function delineate(str){
+	thevar = str.indexOf("=") + 1;
+	//theright = str.lastIndexOf("&");
+	return(str.substring(thevar));
+}
+
+document.write("Variable is " +delineate(numval));
+
+alert(typeof(delineate(numval)));
+var n = parseInt(m);
+document.getElementById("cardface").innerHTML = "<img src='"+tarotcards[n].image+"' width=300 height=550 align=left hspace=20>";
+document.getElementById("message").innerHTML = "<h2>"+tarotcards[n].card+"</h2><p><strong>Description:</strong> "+tarotcards[n].description+"</p><p><strong>Divinatory Meanings:</strong> <i>"+tarotcards[n].interpretation1+"</i></p><p><strong>Inverted Meanings:</strong> <i>"+tarotcards[n].interpretation0+"</i></p>";
+
+
+</script>
+<!--<h3>Select any card.</h3>
+<input type="checkbox" onClick="SetHTML(this.checked,'hid')"> test this here<p><hr><p>-->
+
+
+<div id="card">
+    <!--<form>
+    <select onChange="onSelect(this);" class="select">
+    <option value=''>Select a card</option>      
+<script>   
+for (n=0;n<=tarotcards.length;n++) {
+	document.write("<option value='"+n+"'>"+tarotcards[n].card+"</option>");	
+}	
+function onSelect(objSelect){
+	var n = objSelect.value;
+	document.getElementById("cardface").innerHTML = "<img src='"+tarotcards[n].image+"' width=300 height=550 align=left hspace=20>";
+	document.getElementById("message").innerHTML = "<h2>"+tarotcards[n].card+"</h2><p><strong>Description:</strong> "+tarotcards[n].description+"</p><p><strong>Divinatory Meanings:</strong> <i>"+tarotcards[n].interpretation1+"</i></p><p><strong>Inverted Meanings:</strong> <i>"+tarotcards[n].interpretation0+"</i></p>";
+}	
+</script>
+    </select>
+    </form>--><p>
+    
+	<div id="cardface"><img src="back.jpg" width=300 height=550 align=left hspace=20></div>
+</div>
+<div id="text">
+	<div id="message"></div>
+</div>
+
+</body>
+</html>

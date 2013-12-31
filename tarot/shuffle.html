@@ -1,0 +1,188 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Tarot Reader</title>
+<script src="tarotcards.js" language="JavaScript" type="text/javascript"></script>
+<script src="tarotcardsinverted.js" language="JavaScript" type="text/javascript"></script>
+<style>
+#card {
+	float:left;
+	padding:10px;
+	background-color:#fff;
+	text-align:center;
+}
+#text {
+	float:left;
+	padding:10px;
+	margin:60px 10px 0px 10px;
+	background-color:#fff;
+	width:500px;
+}
+.btn {
+	-webkit-border-radius: 20;
+	-moz-border-radius: 20;
+	border-radius: 20px;
+	font-family: Arial;
+	color: #000000;
+	font-size: 16px;
+	background: #ff9900;
+	padding: 10px 20px 10px 20px;
+	margin: 5px 5px 15px 5px;
+	text-decoration: none;
+	border:0px;
+}
+.btn:hover {
+	background: #ff6600;
+	text-decoration: none;
+}
+h2 {
+	font: 30px/1.0 Papyrus, Georgia, "Times New Roman", Times, serif;
+	/*font: 30px/1.0 Papyrus, Georgia, "Times New Roman", Times, serif;*/
+	margin:0 0 35px 0;
+	padding:0;
+}
+p {
+	font: 16px/1.6 Georgia, "Times New Roman", Times, serif;
+	margin:25px 0;
+	padding:0;
+}
+</style>
+</head>
+<body>
+<script>
+//Fisher-Yates shuffle
+function fisherYates ( myArray ) {
+   var i = myArray.length, j, tempi, tempj;
+   if ( i === 0 ) return false;
+   while ( --i ) {
+     j = Math.floor( Math.random() * ( i + 1 ) );
+     tempi = myArray[i];
+     tempj = myArray[j];
+     myArray[i] = tempj;
+     myArray[j] = tempi;
+   }
+}
+
+//temporary array for tarotcards array
+var arrayShuff = new Array();
+for (var i=0;i< tarotcards.length;i++){
+	arrayShuff.push(i);
+}
+
+//shuffle temporary array
+fisherYates(arrayShuff);
+
+//temporary array, push shuffled tarotcards into it
+var temp_tarotcards = new Array();
+for (i=0;i < arrayShuff.length;i++){
+	temp_tarotcards.push(tarotcards[arrayShuff[i]]);
+}
+//and use it to re-remake tarotcards array 
+tarotcards = new Array();
+tarotcards = temp_tarotcards.slice(0);
+
+//temporary array, push shuffled tarotcardsinverted into it
+temp_tarotcards = new Array();
+for (i=0;i < arrayShuff.length;i++){
+	temp_tarotcards.push(tarotcardsinverted[arrayShuff[i]]);
+}
+//and use it to re-make tarotcardsinverted array
+tarotcardsinverted = new Array();
+tarotcardsinverted = temp_tarotcards.slice(0);
+
+//new array for use with both regular and inverted cards
+cardstack = new Array();
+//random up or down for each i & add from appropriate shuffled arrays into it
+for (i=0;i<tarotcards.length;i++){
+	 var ud = upDown(0,1);  
+	 if (ud==1) {  
+		 cardstack[i] = tarotcardsinverted[i]; 
+	 } else {
+		 cardstack[i] = tarotcards[i]; 
+	 }
+}
+
+function printEm() {
+	for(i=0;i<cardstack.length;i++){
+		document.write(i+": <a href='card.html?num="+i+"'>");
+		document.write(cardstack[i].card);
+		document.write("</a><br/>");
+	}
+}
+//start before 0
+var n=-1;
+
+//advance throught the deck
+function takeOne() {
+	n++;
+	if (n==cardstack.length){
+		document.getElementById("message").innerHTML = "You have reached the end of the deck.";
+	} else {
+		/*var ud = upDown(0,1);
+		if (ud==1) {  
+			cardstack[n].image = cardstack[n].image1;
+			cardstack[n].interpretation = cardstack[n].interpretation1;
+		} else {
+			cardstack[n].card = cardstack[n].card+" <i>inverted</i>";
+			cardstack[n].image = cardstack[n].image0;
+			cardstack[n].interpretation = cardstack[n].interpretation0;
+		}*/
+		var cardno = n+1;
+		var cardsleft = cardstack.length - n-1;
+		document.getElementById("cardface").innerHTML = "<img src='"+cardstack[n].image+"' width=300 height=550 align=left hspace=20>";
+		document.getElementById("message").innerHTML = "<h2>"+cardstack[n].card+"</h2><p><strong>Description:</strong> "+cardstack[n].description+"</p><p><strong>Divinatory Meanings:</strong> <i>"+cardstack[n].interpretation1+"</i></p><p><strong>Inverted Meanings:</strong> <i>"+cardstack[n].interpretation0+"</i></p>";
+	}
+}
+
+//go back through the deck
+function goBack() {
+	n--;
+	if (n<0){
+		document.getElementById("message").innerHTML = "You have reached the beginning of the deck.";
+	} else {
+		//n--;
+		//var ud = upDown(0,1);
+		//if (ud==1) {  
+		//	cardstack[n].image = cardstack[n].image1;
+		//	cardstack[n].interpretation = cardstack[n].interpretation1;
+		//} else {
+		//	cardstack[n].card = cardstack[n].card+" <i>inverted</i>";
+		//	cardstack[n].image = cardstack[n].image0;
+		//	cardstack[n].interpretation = cardstack[n].interpretation0;
+		//}
+		//cardstack[n].image = cardstack[n].image1;
+		//cardstack[n].interpretation = cardstack[n].interpretation1;
+		var cardno = n+1;
+		var cardsleft = cardstack.length - n-1;
+		document.getElementById("cardface").innerHTML = "<img src='"+cardstack[n].image+"' width=300 height=550 align=left hspace=20>";
+		document.getElementById("message").innerHTML = "<h2>"+cardstack[n].card+"</h2><p><strong>Description:</strong> "+cardstack[n].description+"</p><p><strong>Divinatory Meanings:</strong> <i>"+cardstack[n].interpretation1+"</i></p><p><strong>Inverted Meanings:</strong> <i>"+cardstack[n].interpretation0+"</i></p>";
+	}
+}
+
+function upDown(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+</script>
+
+<div style="float:right;font-size:9px;line-height:9px">
+<script>
+printEm();
+</script>
+</div>
+
+<div id="card">
+<form name="myform">
+<input name='pick' type='button' value='pick' onclick='takeOne()' class='btn'>  <input name='reshuffle' type='button' value='reshuffle' onclick='window.location.reload()' class='btn'>  <input name='back' type='button' value='back' onclick='goBack()' class='btn'>
+</form> 
+	<div id="cardface"><img src="back.jpg" width=300 height=550 align=left hspace=20></div>
+</div>
+<div id="text">
+	<div id="message"></div>
+</div>
+
+
+
+</body>
+</html>
