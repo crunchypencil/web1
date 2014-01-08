@@ -170,7 +170,7 @@ p {
 }
 #threecard0 {
  width:180px;
- height:360px;
+ height:306px;
  border:2px dashed #000;
  border-radius: 8px;
  padding:0px;
@@ -184,7 +184,7 @@ p {
 }
 #threecard1 {
  width:180px;
- height:360px;
+ height:306px;
  border:2px dashed #000;
  border-radius: 8px;
  padding:0px;
@@ -198,7 +198,7 @@ p {
 }
 #threecard2 {
  width:180px;
- height:360px;
+ height:306px;
  border:2px dashed #000;
  border-radius: 8px;
  padding:0px;
@@ -283,7 +283,7 @@ for (i=0;i<tarotcards.length;i++){
 //displays the deck
 function printEm() {
  for(i=0;i<cardstack.length;i++){
-  document.write("<div id='card'><a href='#' onclick='takeaCard(this)'><img src='back.png' width=100 height=200 border=0 ></a></div>");
+  document.write("<div id='card'><a href='#' onclick='takeaCard(this)'><img src='back.png' width=100 height=170 border=0 ></a></div>");
  }
 }
 //start before 0
@@ -320,7 +320,7 @@ var count=0;
 function takeaCard(ele) { 
  if (count<3) {
    ele.innerHTML = "";
-   $("#threecard"+count).html("<a href='#dialog"+count+"' name=modal><img src='"+cardstack[count].image+"' width=180 height=360 border=0></a>");
+   $("#threecard"+count).html("<a href='#dialog"+count+"' name=modal><img src='"+cardstack[count].image+"' width=180 height=306 border=0></a>");
    $("#threecard"+count).css("border","2px dashed #fff");
    count++;
  }
@@ -351,8 +351,8 @@ $(document).ready(function() {
   var winW = $(window).width();
               
   //Set the popup window to center
-  //$(id).css('top',  winH/2-$(id).height()/2);
-  $(id).css('top',  '50px');
+  $(id).css('top',  winH/2-$(id).height()/1.8);
+  //$(id).css('top',  '50px');
   $(id).css('left', winW/2-$(id).width()/1.9);
   
  
