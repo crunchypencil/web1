@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Past/Present/Future</title>
+<link href='http://fonts.googleapis.com/css?family=IM+Fell+DW+Pica+SC|Bilbo+Swash+Caps|Metamorphous|Jacques+Francois|Macondo|Uncial+Antiqua|IM+Fell+Double+Pica:400,400italic|MedievalSharp' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script src="tarotcards.js" language="JavaScript" type="text/javascript"></script>
+<script src="tarotcardsinverted.js" language="JavaScript" type="text/javascript"></script>
+<style>
+/*
+font-family: 'IM Fell DW Pica SC', serif;
+font-family: 'Bilbo Swash Caps', cursive;
+font-family: 'Macondo Swash Caps', cursive;
+font-family: 'Almendra Display', cursive;
+font-family: 'Felipa', cursive;
+font-family: 'Gloria Hallelujah', cursive;
+font-family: 'UnifrakturCook', cursive;
+font-family: 'Tangerine', cursive;
+font-family: 'Elsie', cursive;
+font-family: 'Aladin', cursive;
+font-family: 'Metamorphous', cursive;
+font-family: 'Pirata One', cursive;
+font-family: 'Jacques Francois', serif;
+font-family: 'Milonga', cursive;
+font-family: 'Macondo', cursive;
+font-family: 'Uncial Antiqua', cursive;
+font-family: 'Almendra', serif;
+font-family: 'Playfair Display SC', serif;
+font-family: 'IM Fell Double Pica', serif;
+font-family: 'MedievalSharp', cursive;
+*/
+body {
+ margin-left: auto ;
+    margin-right: auto ;
+ 
+}
+#enclosure {
+ width:100%;
+ min-width: 900px;
+ text-align:center;
+}
+#enclosure2 {
+ width:700px;
+ margin-left: 10% ;
+    margin-right: 5% ;
+ text-align:center;
+ 
+}
+#enclosure3 {
+ width:150px;
+ margin-left: 0 ;
+    margin-right: 0 ;
+ text-align:center;
+ float:right;
+ 
+}
+#cardface {
+ float:left;
+ padding:0;
+ margin:0 0 0 -20px;
+ background-color:#fff;
+ text-align:center;
+}
+#carddescr {
+ float:left;
+ padding:10px;
+ background-color:#fff;
+ text-align:center;
+}
+#text {
+ float:left;
+ padding:0px;
+ margin:0px;
+ background-color:#fff;
+ width:500px;
+ height:500px;
+ overflow-y:auto;overflow-x:hidden;
+ text-align:left;
+}
+#closebox {
+ float:right;
+ top:-15px;
+ right:0px;
+ padding:0px;
+ margin:0px;
+ position:relative;
+}
+#closebox a {
+ font-family: 'IM Fell DW Pica SC', Georgia, "Times New Roman", serif;
+ font-size:36px;
+ text-decoration:none;
+ color:#666;
+}
+#closebox a:hover {
+ color:#000;
+}
+.btn {
+ -webkit-border-radius: 20;
+ -moz-border-radius: 20;
+ border-radius: 20px;
+ font-family: 'IM Fell DW Pica SC', Georgia, "Times New Roman", serif;
+ font-size:32px;
+ text-decoration:none;
+ color:#666;
+ background: #fff;
+ padding: 5px 10px 5px 10px;
+ text-decoration: none;
+ border:0px;
+ outline: none;
+}
+.btn:hover {
+ background: #fff;
+ text-decoration: none;
+ color:#000;
+}
+h2 {
+ font-family: 'IM Fell DW Pica SC', Georgia, "Times New Roman", serif;
+ font-size:36px;
+ color:#666;
+ font-weight:normal;
+ /*font: 30px/1.0 Papyrus, Georgia, "Times New Roman", Times, serif;*/
+ margin:0 0 35px 0;
+ padding:0;
+}
+h3 {
+ font-family: 'IM Fell DW Pica SC', Georgia, "Times New Roman", serif;
+ font-size:30px;
+ color:#666;
+ font-weight:normal;
+ /*font: 30px/1.0 Papyrus, Georgia, "Times New Roman", Times, serif;*/
+ margin:20px 0;
+ padding:0;
+ text-align:center;
+}
+p {
+ font-family: 'IM Fell Double Pica', Georgia, "Times New Roman", serif;
+ font-size:20px;
+ color:#000;
+ /*font: 16px/1.6 Georgia, "Times New Roman", Times, serif;*/
+ margin:25px 0;
+ padding:0;
+}
+.descr {
+ font-family: 'IM Fell DW Pica SC', Georgia, "Times New Roman", serif;
+ font-size:20px;
+ color:#666;
+}
+#cardbox {
+ position:relative;
+ 
+ width:100px;
+}
+#card {
+ width:150px;
+ height:5px;
+ position:relative;
+}
+#threecards {
+ margin: 0 auto;
+ text-align:center;
+ position:relative;
+}
+#space0 {
+ width:180px;
+ margin:5px 20px;
+ float:left;
+ position:relative;
+ text-align:center;
+}
+#threecard0 {
+ width:180px;
+ height:360px;
+ border:2px dashed #000;
+ border-radius: 8px;
+ padding:0px;
+}
+#space1 {
+ width:180px;
+ margin:5px 20px;
+ float:left;
+ position:relative;
+ text-align:center;
+}
+#threecard1 {
+ width:180px;
+ height:360px;
+ border:2px dashed #000;
+ border-radius: 8px;
+ padding:0px;
+}
+#space2 {
+ width:180px;
+ margin:5px 20px;
+ float:left;
+ position:relative;
+ text-align:center;
+}
+#threecard2 {
+ width:180px;
+ height:360px;
+ border:2px dashed #000;
+ border-radius: 8px;
+ padding:0px;
+}
+#mask {
+  position:absolute;
+  left:0;
+  top:0;
+  z-index:9000;
+  background-color:#000;
+  display:none;
+}
+#boxes .window {
+  position:fixed;
+  left:0;
+  top:0;
+  width:850px;
+  height:510px;
+  display:none;
+  z-index:9999;
+  padding:20px;
+  background-color:#ffffff;
+}
+</style>
+<script>
+//Fisher-Yates shuffle
+function fisherYates ( myArray ) {
+   var i = myArray.length, j, tempi, tempj;
+   if ( i === 0 ) return false;
+   while ( --i ) {
+     j = Math.floor( Math.random() * ( i + 1 ) );
+     tempi = myArray[i];
+     tempj = myArray[j];
+     myArray[i] = tempj;
+     myArray[j] = tempi;
+   }
+}
+//temporary array for tarotcards array
+var arrayShuff = new Array();
+for (var i=0;i< tarotcards.length;i++){
+ arrayShuff.push(i);
+}
+//shuffle temporary array
+fisherYates(arrayShuff);
+//temporary array, push shuffled tarotcards into it
+var temp_tarotcards = new Array();
+for (i=0;i < arrayShuff.length;i++){
+ temp_tarotcards.push(tarotcards[arrayShuff[i]]);
+}
+//and use it to re-remake tarotcards array 
+tarotcards = new Array();
+tarotcards = temp_tarotcards.slice(0);
+//temporary array, push shuffled tarotcardsinverted into it
+temp_tarotcards = new Array();
+for (i=0;i < arrayShuff.length;i++){
+ temp_tarotcards.push(tarotcardsinverted[arrayShuff[i]]);
+}
+//and use it to re-make tarotcardsinverted array
+tarotcardsinverted = new Array();
+tarotcardsinverted = temp_tarotcards.slice(0);
+//new array for use with both regular and inverted cards
+cardstack = new Array();
+//random up or down for each i & add from appropriate shuffled arrays into it
+for (i=0;i<tarotcards.length;i++){
+  var ud = upDown(0,1);  
+  if (ud==1) {  
+   cardstack[i] = tarotcardsinverted[i]; 
+  } else {
+   cardstack[i] = tarotcards[i]; 
+  }
+}
+ 
+/*function myLoop () {           //  create a loop function
+   setTimeout(function () {    //  call a 3s setTimeout when the loop is called
+      alert('hello');          //  your code here
+      i++;                     //  increment the counter
+      if (i < 5) {            //  if the counter < 10, call the loop function
+         myLoop();             //  ..  again which will trigger another 
+      }                        //  ..  setTimeout()
+   }, 100)
+}*/
+//displays the deck
+function printEm() {
+ for(i=0;i<cardstack.length;i++){
+  document.write("<div id='card'><a href='#' onclick='takeaCard(this)'><img src='back.png' width=100 height=200 border=0 ></a></div>");
+ }
+}
+//start before 0
+var n=-1;
+//advance throught the deck
+function takeOne() {
+ n++;
+ if (n==cardstack.length){
+  document.getElementById("message").innerHTML = "<p>You have reached the end of the deck.</p>";
+ } else {
+  var cardno = n+1;
+  var cardsleft = cardstack.length - n-1;
+  document.getElementById("cardface").innerHTML = "<img src='"+cardstack[n].image+"' width=300 height=510 align=left hspace=20>";
+  document.getElementById("message").innerHTML = "<h2>"+cardstack[n].card+"</h2><p>"+cardstack[n].description+"</p><p><span class='descr'>Divinatory Meanings:</span> <i>"+cardstack[n].interpretation1+"</i></p><p><span class='descr'>Inverted Meanings:</span> <i>"+cardstack[n].interpretation0+"</i></p>";
+ }
+}
+//go back through the deck
+function goBack() {
+ n--;
+ if (n<0){
+  document.getElementById("message").innerHTML = "<p>You have reached the beginning of the deck.</p>";
+ } else {
+  var cardno = n+1;
+  var cardsleft = cardstack.length - n-1;
+  document.getElementById("cardface").innerHTML = "<img src='"+cardstack[n].image+"' width=300 height=510 align=left hspace=20>";
+  document.getElementById("message").innerHTML = "<h2>"+cardstack[n].card+"</h2><p>"+cardstack[n].description+"</p><p><span class='descr'>Divinatory Meanings:</span> <i>"+cardstack[n].interpretation1+"</i></p><p><span class='descr'>Inverted Meanings:</span> <i>"+cardstack[n].interpretation0+"</i></p>";
+ }
+}
+function upDown(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+var count=0;
+//move a card from the right stack to display
+function takeaCard(ele) { 
+ if (count<3) {
+   ele.innerHTML = "";
+   $("#threecard"+count).html("<a href='#dialog"+count+"' name=modal><img src='"+cardstack[count].image+"' width=180 height=360 border=0></a>");
+   $("#threecard"+count).css("border","2px dashed #fff");
+   count++;
+ }
+}
+$(document).ready(function() { 
+ //$('a[name=modal]').click(function(e) {
+ $("#threecard0,#threecard1,#threecard2").click(function(e) {
+  
+  //Cancel the link behavior
+  e.preventDefault();
+  
+  //Get the A tag
+  var id = $(this).children('a').attr('href');
+ 
+  //Get the screen height and width
+  var maskHeight = $(document).height();
+  var maskWidth = $(window).width();
+ 
+  //Set heigth and width to mask to fill up the whole screen
+  $('#mask').css({'width':maskWidth,'height':maskHeight});
+  
+  //transition effect  
+  $('#mask').fadeIn(200); 
+  $('#mask').fadeTo("fast",0.3); 
+ 
+  //Get the window height and width
+  var winH = $(window).height();
+  var winW = $(window).width();
+              
+  //Set the popup window to center
+  //$(id).css('top',  winH/2-$(id).height()/2);
+  $(id).css('top',  '50px');
+  $(id).css('left', winW/2-$(id).width()/1.9);
+  
+ 
+  //transition effect
+  $(id).fadeIn(200); 
+ 
+ });
+ 
+ 
+ /*$("#modal").click(function(e) {
+  //Cancel the link behavior
+  e.preventDefault();
+  
+  //Get the A tag
+  var id = $(this).attr('href');
+ 
+  //Get the screen height and width
+  var maskHeight = $(document).height();
+  var maskWidth = $(window).width();
+ 
+  //Set heigth and width to mask to fill up the whole screen
+  $('#mask').css({'width':maskWidth,'height':maskHeight});
+  
+  //transition effect  
+  $('#mask').fadeIn(1000); 
+  $('#mask').fadeTo("slow",0.8); 
+ 
+  //Get the window height and width
+  var winH = $(window).height();
+  var winW = $(window).width();
+              
+  //Set the popup window to center
+  $(id).css('top',  winH/2-$(id).height()/2);
+  $(id).css('left', winW/2-$(id).width()/2);
+ 
+  //transition effect
+  $(id).fadeIn(2000); 
+ 
+ });*/
+ 
+ //if close button is clicked
+ $('.window .close').click(function (e) {
+  //Cancel the link behavior
+  e.preventDefault();
+  
+  $('#mask').hide();
+  $('.window').hide();
+ });  
+ 
+ //if mask is clicked
+ $('#mask').click(function () {
+  $(this).hide();
+  $('.window').hide();
+ });   
+ $(window).resize(function () {
+  
+   var box = $('#boxes .window');
+ 
+        //Get the screen height and width
+        var maskHeight = $(document).height();
+        var maskWidth = $(window).width();
+      
+        //Set height and width to mask to fill up the whole screen
+        $('#mask').css({'width':maskWidth,'height':maskHeight});
+               
+        //Get the window height and width
+        var winH = $(window).height();
+        var winW = $(window).width();
+        //Set the popup window to center
+        box.css('top',  winH/2 - box.height()/2);
+        box.css('left', winW/2 - box.width()/2);
+ });
+});
+</script>
+</head>
+<body>
+<div id="enclosure">
+    <div id="enclosure2">
+    
+        <div id="threecards">
+            <div id="space0"><h3>the Past</h3>
+                <div id="threecard0"></div>
+            </div>
+            <div id="space1"><h3>the Present</h3>
+                <div id="threecard1"></div>
+  
+<div style="margin-top:50px;">            
+<a href="" onclick='window.location.reload()' class=btn>reshuffle</a>
+</div>
+                
+            </div>
+            <div id="space2"><h3>the Future</h3>
+                <div id="threecard2"></div>
+            </div>
+            
+            
+        </div>
+    
+    </div>
+ <div id="enclosure3">
+        <div id="cardbox">
+<script>
+printEm();
+</script>  
+        </div>
+ </div>
+    <div id="boxes">
+<script>
+function displayBacks() {
+ for(n=0;n<3;n++){
+  $("#boxes").append("<div id='dialog"+n+"' class='window'><div id='closebox'><a href='' class=close>x</a></div><div id='cardface'><img src='"+cardstack[n].image+"' width=300 height=510 align=left hspace=20></div><div id='text'><h2>"+cardstack[n].card+"</h2><p>"+cardstack[n].description+"</p><p><span class='descr'>Divinatory Meanings:</span> <i>"+cardstack[n].interpretation1+"</i></p><p><span class='descr'>Inverted Meanings:</span> <i>"+cardstack[n].interpretation0+"</i></p></div></div>");
+ }
+}
+displayBacks();  
+</script>
+        <div id="mask"></div>
+    </div>
+ 
+</div>
+</body>
+</html>
