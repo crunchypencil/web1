@@ -1,0 +1,167 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>The Tarot Deck</title>
+<link href='http://fonts.googleapis.com/css?family=IM+Fell+DW+Pica+SC|IM+Fell+Double+Pica:400,400italic' rel='stylesheet' type='text/css'>
+<link href="style.css" rel="stylesheet" type="text/css">
+<script src="tarotcards.js" language="JavaScript" type="text/javascript"></script>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script>
+
+//fade in/out and redirect functionality
+function redirectPage() {
+  window.location = linkLocation;
+}
+$(document).ready(function() {
+$("body").fadeIn(500);
+$('a').click(function(event) {
+    if (this.href == "" || this.href == null) {
+      event.preventDefault();
+      return;
+    }
+    if ((this.href.indexOf("#") == -1) && (this.href.indexOf("mailto:") == -1) && (this.href.indexOf("javascript:") == -1) && (this.target != "_blank")) {
+      event.preventDefault();
+      linkLocation = this.href;
+      $("body").fadeOut(500, redirectPage);
+    }
+  });
+});
+
+//create modal windows
+function makeModals() {
+	for(n=0;n<tarotcards.length;n++){
+		$("#boxes").append("<div id='dialog"+n+"' class='window'><div id='closebox'><a href='#' class='close'>x</a></div><div id='cardface'><img src='"+tarotcards[n].image+"' width=300 height=510 align=left alt='"+tarotcards[n].card+"' title='"+tarotcards[n].card+"'></div><div id='text'><h2>"+tarotcards[n].card+"</h2><p>"+tarotcards[n].description+"</p><p><span class='descr'>Divinatory Meanings:</span> <i>"+tarotcards[n].interpretation1+"</i></p><p><span class='descr'>Inverted Meanings:</span> <i>"+tarotcards[n].interpretation0+"</i></p></div></div>");
+		//$("#boxes").append("here i am. ");
+		//document.write("here i am. ");
+	}
+}
+
+//display all tarot cards by group
+function displayallCards(){
+	document.write("<h4>Major Arcana</h4>");
+	for (n=0;n<=21;n++) {
+		document.write("<div id='smcard'><a href='#dialog"+n+"' name='modal' class='modal' alt='"+tarotcards[n].card+"' title='"+tarotcards[n].card+"'><img src='"+tarotcards[n].image+"' width=50 height=85 border=0></a></div>");	
+	}
+	document.write("<div style='clear:both;'></div><h4>Wands</h4>");	
+	for (n=22;n<=35;n++) {
+		document.write("<div id='smcard'><a href='#dialog"+n+"' name='modal' class='modal' alt='"+tarotcards[n].card+"' title='"+tarotcards[n].card+"'><img src='"+tarotcards[n].image+"' width=50 height=85 border=0></a></div>");	
+	}
+	document.write("<div style='clear:both'></div><h4>Pentacles</h4>");	
+	for (n=36;n<=49;n++) {
+		document.write("<div id='smcard'><a href='#dialog"+n+"' name='modal' class='modal' alt='"+tarotcards[n].card+"' title='"+tarotcards[n].card+"'><img src='"+tarotcards[n].image+"' width=50 height=85 border=0></a></div>");	
+	}
+	document.write("<div style='clear:both'></div><h4>Cups</h4>");	
+	for (n=50;n<=63;n++) {
+		document.write("<div id='smcard'><a href='#dialog"+n+"' name='modal' class='modal' alt='"+tarotcards[n].card+"' title='"+tarotcards[n].card+"'><img src='"+tarotcards[n].image+"' width=50 height=85 border=0></a></div>");	
+	}
+	document.write("<div style='clear:both'></div><h4>Swords</h4>");	
+	for (n=64;n<=77;n++) {
+		document.write("<div id='smcard'><a href='#dialog"+n+"' name='modal' class='modal' alt='"+tarotcards[n].card+"' title='"+tarotcards[n].card+"'><img src='"+tarotcards[n].image+"' width=50 height=85 border=0></a></div>");	
+	}
+}
+
+function playMP3(id){
+	document.getElementById(id).play();
+}
+
+//modal window functions
+$(document).ready(function() {	
+	
+	$("a[name=modal]").click(function(e) {
+		
+		//Cancel the link behavior
+		e.preventDefault();
+		
+		//Get the A tag
+		//var id = $(this).children('a').attr('href');
+		var id = $(this).attr('href');
+		
+		if (id){
+			playMP3('flip');
+			
+			//Get the screen height and width
+			var maskHeight = $(document).height();
+			var maskWidth = $(window).width();
+		
+			//Set heigth and width to mask to fill up the whole screen
+			$('#mask').css({'width':maskWidth,'height':maskHeight});
+			
+			//transition effect		
+			$('#mask').fadeIn(200);	
+			$('#mask').fadeTo("fast",0.8);	
+		
+			//Get the window height and width
+			var winH = $(window).height();
+			var winW = $(window).width();
+				  
+			//Set the popup window to center
+			$(id).css('top',  winH/2-$(id).height()/1.8);
+			$(id).css('left', winW/2-$(id).width()/1.9);
+			
+			//transition effect
+			$(id).fadeIn(500); 
+		}
+	});
+	
+	//if close button is clicked
+	$('.window .close').click(function (e) {
+		//Cancel the link behavior
+		e.preventDefault();
+		playMP3('flip');
+		$('#mask').hide();
+		$('.window').hide();
+	});		
+	
+	//if mask is clicked
+	$('#mask').click(function () {
+		playMP3('flip');
+		$(this).hide();
+		$('.window').hide();
+	});			
+
+	$(window).resize(function () {
+	 
+ 		var box = $('#boxes .window');
+ 
+        //Get the screen height and width
+        var maskHeight = $(document).height();
+        var maskWidth = $(window).width();
+      
+        //Set height and width to mask to fill up the whole screen
+        $('#mask').css({'width':maskWidth,'height':maskHeight});
+               
+        //Get the window height and width
+        var winH = $(window).height();
+        var winW = $(window).width();
+
+        //Set the popup window to center
+        box.css('top',  winH/2 - box.height()/2);
+        box.css('left', winW/2 - box.width()/2);
+	});
+});
+</script>
+</head>
+<body style="display:none;">
+
+<div id="enclosure" style="">
+	<div id="enclosure1">
+<script>
+displayallCards();
+</script>
+	</div>
+    
+</div>
+
+<div id="boxes">
+<script>
+makeModals();
+</script>
+	<div id="mask"></div>
+</div>
+
+<div id="myDiv" style="position:fixed; bottom:10px; left:10%; right:10%; height:20px; text-align:center;"><h5><a href="index.html">fate browser 1.0</a>&nbsp;&nbsp;&nbsp;&nbsp;by&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://crunchypencil.com/">crunchy pencil design</a></h5></div>
+
+<audio src="place.mp3" id="flip" preload="auto"></audio>
+</body>
+</html>

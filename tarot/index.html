@@ -2,64 +2,49 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Tarot Reader</title>
+<title>Fate Browser 1.0</title>
+<link href='http://fonts.googleapis.com/css?family=IM+Fell+DW+Pica+SC|IM+Fell+Double+Pica:400,400italic' rel='stylesheet' type='text/css'>
+<link href="style.css" rel="stylesheet" type="text/css">
 <script src="tarotcards.js" language="JavaScript" type="text/javascript"></script>
-</head>
-<body>
+<script type="text/javascript" src="jquery.min.js"></script>
 <script>
-// Fisher-Yates shuffle
-Array.prototype.shuffle = function() {
-    var input = this;
-     
-    for (var i = input.length-1; i >=0; i--) {
-     
-        var randomIndex = Math.floor(Math.random()*(i+1)); 
-        var itemAtIndex = input[randomIndex]; 
-         
-        input[randomIndex] = input[i]; 
-        input[i] = itemAtIndex;
+//fade in/out and redirect functionality
+function redirectPage() {
+  window.location = linkLocation;
+}
+$(document).ready(function() {
+$("body").fadeIn(2000);
+$('a').click(function(event) {
+    if (this.href == "" || this.href == null) {
+      event.preventDefault();
+      return;
     }
-    return input;
-}
+    if ((this.href.indexOf("#") == -1) && (this.href.indexOf("mailto:") == -1) && (this.href.indexOf("javascript:") == -1) && (this.target != "_blank")) {
+      event.preventDefault();
+      linkLocation = this.href;
+      $("body").fadeOut(500, redirectPage);
+    }
+  });
+});
 
-tarotcards.shuffle(); // from tarotcards.js
-
-var n=0;
-
-function takeOne() {
-	
-	if (n==tarotcards.length){
-		document.getElementById("message").innerHTML = "You have reached the end of the deck.";
-	} else {
-		var ud = upDown(0,1);
-		if (ud==1) {  
-			tarotcards[n].image = tarotcards[n].image1;
-			tarotcards[n].interpretation = tarotcards[n].interpretation1;
-		} else {
-			tarotcards[n].card = tarotcards[n].card+" <i>inverted</i>";
-			tarotcards[n].image = tarotcards[n].image0;
-			tarotcards[n].interpretation = tarotcards[n].interpretation0;
-		}
-		var cardno = n+1;
-		var cardsleft = tarotcards.length - n-1;
-		document.getElementById("message").innerHTML = "<img src='"+tarotcards[n].image+"' width=300 height=550 align=left hspace=20><h2>"+tarotcards[n].card+"</h2><strong>Description:</strong> "+tarotcards[n].description+"<p><strong>Divinatory Meanings:</strong> "+tarotcards[n].interpretation+"<p>Count: "+cardno+", "+cardsleft+" cards left. "+tarotcards.length+" cards in the deck.";
-
-		n++;
-	}
-}
-
-function upDown(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
+function playMP3(id){
+	document.getElementById(id).play();
 }
 
 </script>
-<h3>Pick a card. </h3>
-<form name="myform">
-<input name='pick' type='button' value='pick' onclick='takeOne()'> | <input name='reshuffle' type='button' value='reshuffle' onclick='window.location.reload()'>
-</form> 
-</p>
-<p><div id="message"><img src="back.jpg" width=300 height=550 align=left hspace=20></div></p>
+</head>
+<body style="display:none;">
+<div id="enclosure" style="">
+	
+		<div style="text-align:center;width:100%"><h1><span id="fate">fate</span><br />BrowseR</h1><h2><a href="pastpresentfuture.html" onclick="playMP3('flip');">tarot reading</a>&nbsp;&nbsp;&nbsp;<span id="fate">&sect;</span>&nbsp;&nbsp;&nbsp;<a href="wholedeck.html" onclick="playMP3('flip');">deck</a>&nbsp;&nbsp;&nbsp;<span id="fate">&sect;</span>&nbsp;&nbsp;&nbsp;<a href="deck.html" onclick="playMP3('flip');">free shuffle</a></h2></div>
 
+    
+</div>
+
+
+<audio src="place.mp3" id="flip" preload="auto"></audio>
+
+<div id="myDiv" style="position:fixed; bottom:10px; left:10%; right:10%; height:20px; text-align:center;"><h5>fate browser 1.0 &nbsp;&nbsp;&nbsp;&nbsp;by&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://crunchypencil.com/">crunchy pencil design</a></h5></div>
 
 </body>
 </html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Pick from the Deck</title>
+<link href='http://fonts.googleapis.com/css?family=IM+Fell+DW+Pica+SC|IM+Fell+Double+Pica:400,400italic' rel='stylesheet' type='text/css'>
+<link href="style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="jquery.min.js"></script>
+<script src="tarotcards.js" language="JavaScript" type="text/javascript"></script>
+<script src="tarotcardsinverted.js" language="JavaScript" type="text/javascript"></script>
+<script>
+
+//fade in/out and redirect functionality
+function redirectPage() {
+  window.location = linkLocation;
+}
+$(document).ready(function() {
+$("body").fadeIn(500);
+$('a').click(function(event) {
+    if (this.href == "" || this.href == null) {
+      event.preventDefault();
+      return;
+    }
+    if ((this.href.indexOf("#") == -1) && (this.href.indexOf("mailto:") == -1) && (this.href.indexOf("javascript:") == -1) && (this.target != "_blank")) {
+      event.preventDefault();
+      linkLocation = this.href;
+      $("body").fadeOut(500, redirectPage);
+    }
+  });
+});
+
+
+//Fisher-Yates shuffle
+function fisherYates ( myArray ) {
+	var i = myArray.length, j, tempi, tempj;
+	if ( i === 0 ) return false;
+	while ( --i ) {
+		j = Math.floor( Math.random() * ( i + 1 ) );
+		tempi = myArray[i];
+		tempj = myArray[j];
+		myArray[i] = tempj;
+		myArray[j] = tempi;
+   }
+}
+
+//temporary array for tarotcards array
+var arrayShuff = new Array();
+for (var i=0;i< tarotcards.length;i++){
+	arrayShuff.push(i);
+}
+
+//shuffle temporary array
+fisherYates(arrayShuff);
+
+//temporary array, push shuffled tarotcards into it
+var temp_tarotcards = new Array();
+for (i=0;i < arrayShuff.length;i++){
+	temp_tarotcards.push(tarotcards[arrayShuff[i]]);
+}
+
+//and use it to re-remake tarotcards array 
+tarotcards = new Array();
+tarotcards = temp_tarotcards.slice(0);
+
+//temporary array, push shuffled tarotcardsinverted into it
+temp_tarotcards = new Array();
+for (i=0;i < arrayShuff.length;i++){
+	temp_tarotcards.push(tarotcardsinverted[arrayShuff[i]]);
+}
+
+//and use it to re-make tarotcardsinverted array
+tarotcardsinverted = new Array();
+tarotcardsinverted = temp_tarotcards.slice(0);
+
+//new array for use with both regular and inverted cards
+cardstack = new Array();
+
+//random up or down for each i & add from appropriate shuffled arrays into it
+for (i=0;i<tarotcards.length;i++){
+	 var ud = upDown(0,1);  
+	 if (ud==1) {  
+		 cardstack[i] = tarotcardsinverted[i]; 
+	 } else {
+		 cardstack[i] = tarotcards[i]; 
+	 }
+}
+
+//displays the deck
+function printEm(i) {
+	if(i<cardstack.length){
+		$("#cardbox").append("<div id='card'><a href='#' onclick='takeaCard(this);takeOne()'><img src='back2.png' width=135 height=213 border=0 /></a></div>");
+		i++;
+		setTimeout("printEm("+i+")", 5);
+	}
+	playMP3('shuffle');
+}
+
+
+//move a card from the right stack to display
+function takeaCard(ele) { 
+	ele.innerHTML = "";
+	playMP3('pick');
+}
+
+function playMP3(id){
+	document.getElementById(id).play();
+}
+
+//randomizer function
+function upDown(min, max) {
+	return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+//start before 0
+var n=-1;
+//advance throught the deck
+function takeOne() {
+	n++;
+	if (n==cardstack.length){
+		document.getElementById("message").innerHTML = "<p>You have reached the end of the deck.</p>";
+	} else {
+		var cardno = n+1;
+		var cardsleft = cardstack.length - n-1;
+		$("#cardface").html("<div id='inv1' style='display:none;'><img src='"+cardstack[n].image+"' width=300 height=510 align=left alt="+cardstack[n].card+" title="+cardstack[n].card+"></div>");
+		$("#message").html("<div id='inv2' style='display:none;'><h2>"+cardstack[n].card+"</h2><p>"+cardstack[n].description+"</p><p><span class='descr'>Divinatory Meanings:</span> <i>"+cardstack[n].interpretation1+"</i></p><p><span class='descr'>Inverted Meanings:</span> <i>"+cardstack[n].interpretation0+"</i></p></div>");
+		$("#inv1,#inv2").fadeIn("slow",function(){});
+	}
+}
+
+</script>
+</head>
+<body style="display:none;">
+<div id="enclosure">
+    <div id="enclosure2">
+    
+        <div id="cardfaceenclosure">
+        
+            <div id="cardface">
+                <div style="border:2px dashed #666;border-radius: 8px; width:300px;height:510px;"></div>
+            </div>
+            <div style="clear:both; padding-top:10px; text-align:center;">
+            <a href="#" onclick='window.location.reload()' class='btn'>reshuffle</a>
+            </div>
+        </div>
+        <div id="text"><p>
+            <div id="message"></div>
+        </div>
+     </div>  
+     <div id="enclosure3">
+        <div id="cardbox">
+<script>
+printEm(0);
+</script>  
+        </div>
+	</div>
+	
+        
+<div id="myDiv" style="position:fixed; bottom:10px; left:10%; right:10%; height:20px; text-align:center;"><h5><a href="index.html">fate browser 1.0</a>&nbsp;&nbsp;&nbsp;&nbsp;by&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://crunchypencil.com/">crunchy pencil design</a></h5></div>
+
+<audio src="shuffling-cards-1.mp3" id="shuffle" preload="auto"></audio>
+<audio src="turnover.mp3" id="pick" preload="auto"></audio>
+<audio src="place.mp3" id="flip" preload="auto"></audio>
+</body>
+</html>
