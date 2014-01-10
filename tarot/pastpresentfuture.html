@@ -2,147 +2,185 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Past/Present/Future</title>
+<title>Tarot Reading</title>
 <link href='http://fonts.googleapis.com/css?family=IM+Fell+DW+Pica+SC|IM+Fell+Double+Pica:400,400italic' rel='stylesheet' type='text/css'>
 <link href="style.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="jquery.min.js"></script>
 <script src="tarotcards.js" language="JavaScript" type="text/javascript"></script>
 <script src="tarotcardsinverted.js" language="JavaScript" type="text/javascript"></script>
 <script>
+
+//fade in/out and redirect functionality
+function redirectPage() {
+  window.location = linkLocation;
+}
+$(document).ready(function() {
+$("body").fadeIn(500);
+$('a').click(function(event) {
+    if (this.href == "" || this.href == null) {
+      event.preventDefault();
+      return;
+    }
+    if ((this.href.indexOf("#") == -1) && (this.href.indexOf("mailto:") == -1) && (this.href.indexOf("javascript:") == -1) && (this.target != "_blank")) {
+      event.preventDefault();
+      linkLocation = this.href;
+      $("body").fadeOut(500, redirectPage);
+    }
+  });
+});
+
 //Fisher-Yates shuffle
 function fisherYates ( myArray ) {
-   var i = myArray.length, j, tempi, tempj;
-   if ( i === 0 ) return false;
-   while ( --i ) {
-     j = Math.floor( Math.random() * ( i + 1 ) );
-     tempi = myArray[i];
-     tempj = myArray[j];
-     myArray[i] = tempj;
-     myArray[j] = tempi;
+	var i = myArray.length, j, tempi, tempj;
+	if ( i === 0 ) return false;
+	while ( --i ) {
+		j = Math.floor( Math.random() * ( i + 1 ) );
+		tempi = myArray[i];
+		tempj = myArray[j];
+		myArray[i] = tempj;
+		myArray[j] = tempi;
    }
 }
+
 //temporary array for tarotcards array
 var arrayShuff = new Array();
 for (var i=0;i< tarotcards.length;i++){
- arrayShuff.push(i);
+	arrayShuff.push(i);
 }
+
 //shuffle temporary array
 fisherYates(arrayShuff);
+
 //temporary array, push shuffled tarotcards into it
 var temp_tarotcards = new Array();
 for (i=0;i < arrayShuff.length;i++){
- temp_tarotcards.push(tarotcards[arrayShuff[i]]);
+	temp_tarotcards.push(tarotcards[arrayShuff[i]]);
 }
+
 //and use it to re-remake tarotcards array 
 tarotcards = new Array();
 tarotcards = temp_tarotcards.slice(0);
+
 //temporary array, push shuffled tarotcardsinverted into it
 temp_tarotcards = new Array();
 for (i=0;i < arrayShuff.length;i++){
- temp_tarotcards.push(tarotcardsinverted[arrayShuff[i]]);
+	temp_tarotcards.push(tarotcardsinverted[arrayShuff[i]]);
 }
+
 //and use it to re-make tarotcardsinverted array
 tarotcardsinverted = new Array();
 tarotcardsinverted = temp_tarotcards.slice(0);
+
 //new array for use with both regular and inverted cards
 cardstack = new Array();
+
 //random up or down for each i & add from appropriate shuffled arrays into it
 for (i=0;i<tarotcards.length;i++){
-  var ud = upDown(0,1);  
-  if (ud==1) {  
-   cardstack[i] = tarotcardsinverted[i]; 
-  } else {
-   cardstack[i] = tarotcards[i]; 
-  }
+	 var ud = upDown(0,1);  
+	 if (ud==1) {  
+		 cardstack[i] = tarotcardsinverted[i]; 
+	 } else {
+		 cardstack[i] = tarotcards[i]; 
+	 }
 }
+
 //displays the deck
 function printEm(i) {
- if(i<cardstack.length){
-  $("#cardbox").append("<div id='card'><a href='#' onclick='takeaCard(this)'><img src='back2.png' width=135 height=213 border=0 /></a></div>");
-  i++;
-  setTimeout("printEm("+i+")", 5);
- }
- playMP3('shuffle');
+	if(i<cardstack.length){
+		$("#cardbox").append("<div id='card'><a href='#' onclick='takeaCard(this)'><img src='back2.png' width=135 height=213 border=0 /></a></div>");
+		i++;
+		setTimeout("printEm("+i+")", 5);
+	}
+	playMP3('shuffle');
 }
+
 var count=0;
 //move a card from the right stack to display
 function takeaCard(ele) { 
- if (count<3) {
-   ele.innerHTML = "";
-   $("#threecard"+count).html("<a href='#dialog"+count+"' name='modal' class='modal'><img src='"+cardstack[count].image+"' width=180 height=306 border=0></a>");
-   $("#threecard"+count).css("border","2px dashed #fff");
-   //$("#threecard"+count).css("background","url('back.jpg') no-repeat right top");
-   //$("#threecard"+count).html("<a href='#' name='tmep' id='tmep' class='tmep'>link</a>");
-   count++;
-   playMP3('pick');
- }
+	if (count<3) {
+		ele.innerHTML = "";
+		$("#threecard"+count).html("<a href='#dialog"+count+"' name='modal' class='modal'><img src='"+cardstack[count].image+"' width=180 height=306 border=0 alt="+cardstack[count].card+" title="+cardstack[count].card+"></a>");
+		$("#threecard"+count).css("border","2px dashed #fff");
+		//$("#threecard"+count).css("background","url('back.jpg') no-repeat right top");
+		//$("#threecard"+count).html("<a href='#' name='tmep' id='tmep' class='tmep'>link</a>");
+		count++;
+		playMP3('pick');
+	}
 }
+
+//create modal windows
+function makeModals() {
+	for(n=0;n<3;n++){
+		$("#boxes").append("<div id='dialog"+n+"' class='window'><div id='closebox'><a href='#' class='close'>x</a></div><div id='cardface'><img src='"+cardstack[n].image+"' width=300 height=510 align=left alt="+cardstack[n].card+" title="+cardstack[n].card+"></div><div id='text'><h2>"+cardstack[n].card+"</h2><p>"+cardstack[n].description+"</p><p><span class='descr'>Divinatory Meanings:</span> <i>"+cardstack[n].interpretation1+"</i></p><p><span class='descr'>Inverted Meanings:</span> <i>"+cardstack[n].interpretation0+"</i></p></div></div>");
+	}
+}
+
 function playMP3(id){
- document.getElementById(id).play();
+	document.getElementById(id).play();
 }
+
 //randomizer function
 function upDown(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
+	return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 //modal window functions
-$(document).ready(function() { 
- 
- $("[id*=threecard]").click(function(e) {
-  
-  //Cancel the link behavior
-  e.preventDefault();
-  
-  //Get the A tag
-  var id = $(this).children('a').attr('href');
-  
-  if (id){
-   playMP3('flip');
-   //Get the screen height and width
-   var maskHeight = $(document).height();
-   var maskWidth = $(window).width();
-  
-   //Set heigth and width to mask to fill up the whole screen
-   $('#mask').css({'width':maskWidth,'height':maskHeight});
-   
-   //transition effect  
-   $('#mask').fadeIn(200); 
-   $('#mask').fadeTo("fast",0.3); 
-  
-   //Get the window height and width
-   var winH = $(window).height();
-   var winW = $(window).width();
-      
-   //Set the popup window to center
-   $(id).css('top',  winH/2-$(id).height()/1.8);
-   $(id).css('left', winW/2-$(id).width()/1.9);
-   
-   //transition effect
-   $(id).fadeIn(200); 
-   
-   
-  }
- });
- 
- //if close button is clicked
- $('.window .close').click(function (e) {
-  //Cancel the link behavior
-  e.preventDefault();
-  playMP3('flip');
-  $('#mask').hide();
-  $('.window').hide();
-  
- });  
- 
- //if mask is clicked
- $('#mask').click(function () {
-  playMP3('flip');
-  $(this).hide();
-  $('.window').hide();
- });   
- $(window).resize(function () {
-  
-   var box = $('#boxes .window');
+$(document).ready(function() {	
+	
+	$("[id*=threecard]").click(function(e) {
+		
+		//Cancel the link behavior
+		e.preventDefault();
+		
+		//Get the A tag
+		var id = $(this).children('a').attr('href');
+		
+		if (id){
+			playMP3('flip');
+			
+			//Get the screen height and width
+			var maskHeight = $(document).height();
+			var maskWidth = $(window).width();
+		
+			//Set heigth and width to mask to fill up the whole screen
+			$('#mask').css({'width':maskWidth,'height':maskHeight});
+			
+			//transition effect		
+			$('#mask').fadeIn(200);	
+			$('#mask').fadeTo("fast",0.8);	
+		
+			//Get the window height and width
+			var winH = $(window).height();
+			var winW = $(window).width();
+				  
+			//Set the popup window to center
+			$(id).css('top',  winH/2-$(id).height()/1.8);
+			$(id).css('left', winW/2-$(id).width()/1.9);
+			
+			//transition effect
+			$(id).fadeIn(500); 
+		}
+	});
+	
+	//if close button is clicked
+	$('.window .close').click(function (e) {
+		//Cancel the link behavior
+		e.preventDefault();
+		playMP3('flip');
+		$('#mask').hide();
+		$('.window').hide();
+	});		
+	
+	//if mask is clicked
+	$('#mask').click(function () {
+		playMP3('flip');
+		$(this).hide();
+		$('.window').hide();
+	});			
+
+	$(window).resize(function () {
+	 
+ 		var box = $('#boxes .window');
  
         //Get the screen height and width
         var maskHeight = $(document).height();
@@ -154,14 +192,15 @@ $(document).ready(function() {
         //Get the window height and width
         var winH = $(window).height();
         var winW = $(window).width();
+
         //Set the popup window to center
         box.css('top',  winH/2 - box.height()/2);
         box.css('left', winW/2 - box.width()/2);
- });
+	});
 });
 </script>
 </head>
-<body>
+<body style="display:none;">
 <div id="enclosure">
     <div id="enclosure2">
     
@@ -171,41 +210,37 @@ $(document).ready(function() {
             </div>
             <div id="space1"><h3>the Present</h3>
                 <div id="threecard1"></div>
-  
-<div style="margin-top:50px;">            
-<a href="" onclick='window.location.reload()' class=btn>reshuffle</a>
-</div>
-                
+                    <div style="margin-top:50px;">            
+                    <a href="#" onclick='window.location.reload()' class=btn>reshuffle</a>
+                    </div>
             </div>
             <div id="space2"><h3>the Future</h3>
                 <div id="threecard2"></div>
             </div>
             
-            
         </div>
-    
+        
+        
     </div>
- <div id="enclosure3">
+	<div id="enclosure3">
         <div id="cardbox">
 <script>
 printEm(0);
 </script>  
         </div>
- </div>
+	</div>
     <div id="boxes">
 <script>
-function displayCards() {
- for(n=0;n<3;n++){
-  $("#boxes").append("<div id='dialog"+n+"' class='window'><div id='closebox'><a href='#' class='close'>x</a></div><div id='cardface'><img src='"+cardstack[n].image+"' width=300 height=510 align=left></div><div id='text'><h2>"+cardstack[n].card+"</h2><p>"+cardstack[n].description+"</p><p><span class='descr'>Divinatory Meanings:</span> <i>"+cardstack[n].interpretation1+"</i></p><p><span class='descr'>Inverted Meanings:</span> <i>"+cardstack[n].interpretation0+"</i></p></div></div>");
- }
-}
-displayCards();  
+makeModals();  
 </script>
         <div id="mask"></div>
     </div>
+</div> 
+
+<div id="myDiv" style="position:fixed; bottom:10px; left:10%; right:10%; height:20px; text-align:center;"><h5><a href="index.html">fate browser 1.0</a>&nbsp;&nbsp;&nbsp;&nbsp;by&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://crunchypencil.com/">crunchy pencil design</a></h5></div> 
+
 <audio src="shuffling-cards-1.mp3" id="shuffle" preload="auto"></audio>
 <audio src="turnover.mp3" id="pick" preload="auto"></audio>
 <audio src="place.mp3" id="flip" preload="auto"></audio>
-</div>
 </body>
 </html>
