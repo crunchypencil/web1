@@ -5,7 +5,9 @@
 </head>
 
 <body>
-<blockquote style="background-color:#FFC600;padding:10px;font-family:'Courier New', Courier, monospace;">
+<blockquote style="background-color:#FFF;padding:13px;font-family:'Courier New', Courier, monospace;font-weight:bold;">
+
+
 <?php
 
 $dir="."; // Directory where files are stored
