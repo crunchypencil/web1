@@ -25,14 +25,56 @@ body {
  	display: none;
  	top: 0;
  	left: 0;
- 	z-index: 10000;
+ 	z-index: 100;
 }
 #missile {
  	width: 100px;
  	height: 100px;
  	background: url("boot-side.png") no-repeat left top;
 	background-size:100px 100px;
-	z-index: 10001;
+	z-index: 101;
+}
+#missile1 {
+ 	width: 100px;
+ 	height: 100px;
+ 	background: url("boot-side.png") no-repeat left top;
+	background-size:100px 100px;
+	z-index: 101;
+}
+#missile2 {
+ 	width: 100px;
+ 	height: 100px;
+ 	background: url("boot-side.png") no-repeat left top;
+	background-size:100px 100px;
+	z-index: 101;
+}
+#missile3 {
+ 	width: 100px;
+ 	height: 100px;
+ 	background: url("boot-side.png") no-repeat left top;
+	background-size:100px 100px;
+	z-index: 101;
+}
+#missile4 {
+ 	width: 100px;
+ 	height: 100px;
+ 	background: url("boot-side.png") no-repeat left top;
+	background-size:100px 100px;
+	z-index: 101;
+}
+#missile5 {
+ 	width: 100px;
+ 	height: 100px;
+ 	background: url("boot-side.png") no-repeat left top;
+	background-size:100px 100px;
+	z-index: 101;
+}
+#missile6 {
+ 	width: 100px;
+ 	height: 100px;
+ 	background: url("boot-side.png") no-repeat left top;
+	background-size:100px 100px;
+	z-index: 101;
 }
 #boot { 
 	width: 100px; 
@@ -81,9 +123,10 @@ p {
 	width:550px;
 	height:350px;
 	position: absolute;
-	top:15px;
-	left:15px;
+	top:5px;
+	left:0px;
 	z-index:100;
+	cursor:default;
 }
 #statement p {
 	font-family: "Comic Sans MS", Arial, Helvetica, sans-serif;
@@ -94,6 +137,37 @@ p {
 	text-align:center;
 	padding:0px;
 	margin: 6px 0;
+	width:430px;
+	height:250px;
+	z-index:103;
+	position:absolute;
+	top:50px;
+	left:70px;
+}
+.bigcaps {
+	font-family: "Comic Sans MS", Arial, Helvetica, sans-serif;
+	text-transform:uppercase;
+	font-style:italic;
+	font-size:60px;
+	line-height:1.6;
+	text-align:center;
+	padding:0px;
+	margin: 6px 0;
+	width:430px;
+	height:250px;
+	z-index:103;
+	position:absolute;
+	top:100px;
+	left:70px;
+}
+.title {
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-size:36px;
+	font-style:italic;
+	line-height:1.6;
+	text-align:center;
+	padding:0px;
+	margin: 36px 0;
 	width:430px;
 	height:250px;
 	z-index:103;
@@ -149,77 +223,11 @@ function getMouseXY(e) {
 	return true;
 }
 
-//moves "missile" div
-function throwIt(m) {
-    var elem = document.getElementById("missile");
-    var vlf = parseInt(elem.style.left); 
-	var vtp = parseInt(elem.style.top);
-	
-	if (vlf > -160) {
-		//if boot hits beer
-		if (vlf < 140){
-			document.getElementById("glass").style.backgroundImage = "url(beer_glass-empty.png)";
-			addScore(false);
-			//exit;
-		}
-		//if hand blocks boot		
-		if(vlf <= 240 && vlf > 140 && tempY > 80 && tempY < 240){
-			var d = setInterval(dropIt,10);
-			clearInterval(t);
-			addScore(true);		
-		}
-		if(m===1){vtp+=3;}
-		if(m===2){vtp+=2;}
-		if(m===3){vtp+=1;}
-		if(m===4){vtp-=1;}
-		if(m===5){vtp-=2;}
-		if(m===6){vtp-=3;}
-		vlf-=6;
-		//moves boot left and up or down
-		elem.style.left=vlf+"px";
-		elem.style.top=vtp+"px";
-	}
-}
-//alert(ranDumb(1,6));
-/*var count = 0;
-while (count<6) {
-	
-	var u = setTimeout(makeandThrow,2000);
-	//makeandThrow();
-	//alert(ranDumb(1,6));
-	count++;
-	//clearInterval(u);
-}*/
-
-//createBoot(3);
-//var t = setInterval('throwIt(3)',20);
-
-var t;
-function makeandThrow() {
-	var r = ranDumb(1,6);
-	createBoot(r);
-	t = setInterval('throwIt('+r+')',20);
-}
-
-var u = setTimeout(makeandThrow,2000);
-
-//drops boot to bottom and it dissappears
-function dropIt() {
-    var elem = document.getElementById("missile");
-    var vlf = parseInt(elem.style.left); 
-	var vtp = parseInt(elem.style.top);  
-    if (vtp < 300) { 
-        vtp+=2; 
-        elem.style.top=vtp+"px"; 
-    } else {
-		setInterval(function(){elem.parentNode.removeChild(elem);},1000);
-	}
-}
-
 //creates a div w/id="missile"
 function createBoot(n) { 
+	var d = n.toString()
 	var divTag = document.createElement("div"); 
-	divTag.id = "missile";
+	divTag.id = "missile"+d;
 	if (n===1){divTag.style.top = "-100px";}
 	if (n===2){divTag.style.top = "0px";}
 	if (n===3){divTag.style.top = "100px";}
@@ -233,13 +241,101 @@ function createBoot(n) {
 	document.body.appendChild(divTag); 
 }
 
-score = 0;
+//throws "missile" div
+function throwIt(m) {
+	var a = m.toString()
+	var b = "missile"+a;
+    var elem = document.getElementById(b);
+    var vlf = parseInt(elem.style.left); 
+	var vtp = parseInt(elem.style.top);
+	
+	
+	var i = setInterval(function(){
+		var vbt = vtp+100;
+		var vmd = vtp+50;
+		var vpp = vtp-50;
+		//var tempP = tempY-50;
+		//var tempB = tempY+100;
+		if (vlf > -160) {
+			//if boot hits beer
+			if (vlf < 140){
+				document.getElementById("glass").style.backgroundImage = "url(beer_glass-empty.png)";
+				//clearInterval(i);
+				addScore(false);
+				//exit;
+			}
+			//if hand blocks boot		
+			//if(vlf < 240 && vlf > 140 && tempY > 70 && tempY < 230){
+			if(vlf < 240 && vlf > 140 && tempY > vpp && tempY < vmd){
+				addScore(true);
+				clearInterval(i);
+				elem.parentNode.removeChild(elem);
+				//var d = setInterval(function(){dropIt(elem)},5); //dropIt seems to cause problems with multiples appearing
+				makeandThrow();		
+			}
+			if(m===1){vtp+=3;}
+			if(m===2){vtp+=2;}
+			if(m===3){vtp+=1;}
+			if(m===4){vtp-=1;}
+			if(m===5){vtp-=2;}
+			if(m===6){vtp-=3;}
+			//if(m===6){vtp-=3;}
+			vlf-=6;
+			//moves boot left and up or down
+			//elem.innerHTML = "vmd = "+vmd;
+			elem.style.left=vlf+"px";
+			elem.style.top=vtp+"px";
+		} else {
+			//removes boots that have gone past edge of screen anyway
+			elem.parentNode.removeChild(elem);
+		}
+	}, 20); //###SPEED
+}
+
+//drops and removes "missile" div
+function dropIt(lmnt) {
+    var vlf = parseInt(lmnt.style.left); 
+	var vtp = parseInt(lmnt.style.top);  
+    if (vtp < 300) { 
+        vtp+=2; 
+        lmnt.style.top=vtp+"px"; 
+    } else {
+		lmnt.parentNode.removeChild(lmnt);
+		clearInterval(d);
+		//setTimeout(function(){lmnt.parentNode.removeChild(lmnt);},1000);
+		
+		//makeandThrow();
+	}
+}
+
+function reset(){
+	document.getElementById("glass").style.backgroundImage = "url(beer_glass-256.png)";
+	score = 0;
+	document.getElementById('typ2').innerHTML = "SCORE: "+score;
+	makeandThrow();
+}
+
+
+function makeandThrow() {
+//for (count=0;count<6;count++) {
+	document.getElementById('balloon').style.visibility = "hidden";
+	var r = ranDumb(1,6);
+	createBoot(r);
+	throwIt(r);
+}
+
+var score;
 function addScore(e){
 	if (e===true){
 		score++;
 		document.getElementById('typ2').innerHTML = "SCORE: "+score;
 	} else {
 		document.getElementById('typ2').innerHTML = "GAME OVER";
+		setTimeout(function writeit2(){
+			document.getElementById("balloon").style.visibility = "visible";
+			//document.getElementById("statement").style.visibility = "visible";
+			document.getElementById("statement").innerHTML = "<p><br /><br /><b>Bummer, dude...<br /><br /><a href='#' onclick='reset()'>replay</a></b></p>";
+		},2500);
 	}
 }
 
@@ -256,8 +352,9 @@ function ranDumb(min, max) {
 
     
     
-    <!--<div id="balloon">
-    <a href="#" onclick="begin()"><?xml version="1.0" encoding="utf-8"?>
+    <div id="balloon">
+    <a href="#" onclick="reset()"><?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="600px" height="400px" viewBox="-161.5 0 1106 792" enable-background="new -161.5 0 1106 792" xml:space="preserve">
@@ -265,12 +362,17 @@ function ranDumb(min, max) {
 	c0,73.2-59.351,132.55-132.55,132.55H157.935C87.981,775.251-74.027,756.839-74.027,756.839s88.367-40.504,117.825-114.137H6.971
 	c-73.198,0-132.549-59.35-132.549-132.55V165.549C-125.578,92.349-66.228,33,6.971,33h773.207
 	c73.199,0,132.55,59.349,132.55,132.549V510.152z"/>
-</svg></a>-->
-        <!--<div id="statement">
-            <p>I am so very hungry!<br />I must go<br />to the market<br />and steal<br />a loaf of bread!</p>
+</svg></a>
+        <div id="statement">
+        	<span class="title"><br />Beer Defender!</span>
+            <script>
+			setTimeout(function writeit(){
+				document.getElementById("statement").innerHTML = "<span class='bigcaps'><b>DEFEND!</b></span>";
+			},2500);
+			setTimeout(reset,5000);
+			</script>
         </div>
-    </div>-->
+    </div>
 </div>
-
 </body>
 </html>
