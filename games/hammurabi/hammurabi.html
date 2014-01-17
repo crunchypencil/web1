@@ -5,8 +5,8 @@
 <title>Hammurabi's Code</title>
 <style>
 body {
- background-color:#fff;
- margin:10px;
+ background-color:#FC0;
+ margin:0px;
 }
 #container { 
  width: 600px; 
@@ -184,22 +184,22 @@ function keyListener(e){
  } else {
   if(e.keyCode==37 && handLeft > -300){
    //LEFT
-   handLeft -= 4;
+   handLeft -= 10;
    hand.style.left = handLeft + 'px';
   }
   if(e.keyCode==39 && handLeft < -100){
    //RIGHT
-   handLeft += 4;
+   handLeft += 10;
    hand.style.left = handLeft + 'px';
   }
   if(e.keyCode==38 && handTop > 0){
    //UP
-   handTop -= 4;
+   handTop -= 10;
    hand.style.top = handTop + 'px';
   }
   if(e.keyCode==40 && handTop < 260){
    //DOWN
-   handTop += 4;
+   handTop += 10;
    hand.style.top = handTop + 'px';
   }
  }
