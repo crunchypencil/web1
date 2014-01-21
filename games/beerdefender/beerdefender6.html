@@ -268,16 +268,19 @@ function createBoot(n) {
 	document.body.appendChild(divTag); 
 }
 
-var levelspeed = 20;
+var levelspeed = 24;
 function getLevelspeed(lvl) {
-	if (lvl===0) { speed = 20 }
-	if (lvl===1) { speed = 20 }
-	if (lvl===2) { speed = 15 }
-	if (lvl===3) { speed = 11 }
-	if (lvl===4) { speed = 8 }
-	if (lvl===5) { speed = 5 }
-	if (lvl===6) { speed = 2 }
-	if (lvl===7) { speed = 1 }
+	if (lvl===0) { speed = 24 }
+	if (lvl===1) { speed = 24 }
+	if (lvl===2) { speed = 20 }
+	if (lvl===3) { speed = 16 }
+	if (lvl===4) { speed = 12 }
+	if (lvl===5) { speed = 10 }
+	if (lvl===6) { speed = 8 }
+	if (lvl===7) { speed = 6 }
+	if (lvl===8) { speed = 4 }
+	if (lvl===9) { speed = 2 }
+	if (lvl===10) { speed = 1 }
 	levelspeed = speed;
 	return levelspeed;
 }
@@ -316,7 +319,7 @@ function throwIt(m) {
 			if(m===4){vtp-=1;}
 			if(m===5){vtp-=1;}
 			//if(m===6){vtp-=2;}
-			vlf-=6;
+			vlf-=8;
 			//moves boot left and up or down
 			elem.style.left=vlf+"px";
 			elem.style.top=vtp+"px";
