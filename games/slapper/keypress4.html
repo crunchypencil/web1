@@ -1,0 +1,183 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>CANVAS KEYPRESS DEMO</title>
+</head>
+<style>
+body {
+	background-color:#fff;
+	margin:0px;
+	overflow:hidden;
+}
+#container { 
+	width: 800px; 
+	height:500px;   
+	background-color:#FC0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -400px;
+    margin-top: -250px;
+	/*cursor: none;*/
+}
+</style>
+<body>
+
+
+<div id="container">
+
+    <canvas id="box" width="800" height="500">
+    This text is displayed if your browser does not support HTML5 Canvas.<img src="hand-cursor.png" width=50 height=50 id="cursor"><img src="hand-cursor-slap.png" width=50 height=50 id="cursorslap"><img src="hand-cursor-left.png" width=50 height=50 id="cursorleft">
+    </canvas>
+    
+</div>
+<div id="text"></div>
+<script type="text/javascript">
+
+var norm = 0;
+
+function draw() {
+	clear();
+	ctx.fillStyle = "#FC0";
+	//ctx.strokeStyle = "black";
+	rect(0,0,WIDTH,HEIGHT);
+	//ctx.fillStyle = "purple";
+	user(norm);
+}
+
+var canvas;
+var ctx;
+var dx = 5;
+var dy = 5;
+var x = 40;
+var y = 40;
+var WIDTH = 800;
+var HEIGHT = 500;
+
+//var state = 0;
+function user(state) {
+	if (state===0){
+		clear();
+		var cursor = document.getElementById('cursor');
+		ctx.drawImage(cursor,x,y,64,64);
+	} 
+	if (state===1){
+		clear();
+		var cursor = document.getElementById('cursorslap');
+		ctx.drawImage(cursor,x,y,64,64);
+	}
+	if (state===2){
+		clear();
+		var cursor = document.getElementById('cursorleft');
+		ctx.drawImage(cursor,x,y,64,64);
+	}
+}
+
+function rect(x,y,w,h) {
+	ctx.beginPath();
+	ctx.rect(x,y,w,h);
+	ctx.closePath();
+	ctx.fill();
+	//ctx.stroke();
+}
+
+function clear() {
+	ctx.clearRect(0, 0, WIDTH, HEIGHT);
+}
+
+function init() {
+	canvas = document.getElementById("box");
+	ctx = canvas.getContext("2d");
+	return setInterval(draw, 20);
+}
+
+function KeyboardController(keys, repeat) {
+    // Lookup of key codes to timer ID, or null for no repeat
+    //
+    var timers= {};
+
+    // When key is pressed and we don't already think it's pressed, call the
+    // key action callback and set a timer to generate another one after a delay
+    //
+    document.onkeydown= function(event) {
+        var key= (event || window.event).keyCode;
+        if (!(key in keys))
+            return true;
+        if (!(key in timers)) {
+            timers[key]= null;
+            keys[key]();
+            if (repeat!==0)
+                timers[key]= setInterval(keys[key], repeat);
+        }
+        return false;
+    };
+
+    // Cancel timeout and mark key as released on keyup
+    //
+    document.onkeyup= function(event) {
+        var key= (event || window.event).keyCode;
+        if (key in timers) {
+            if (timers[key]!==null)
+                clearInterval(timers[key]);
+            delete timers[key];
+        }
+    };
+
+    // When window is unfocused we may not get key events. To prevent this
+    // causing a key to 'get stuck down', cancel all held keys
+    //
+    window.onblur= function() {
+        for (key in timers)
+            if (timers[key]!==null)
+                clearInterval(timers[key]);
+        timers= {};
+    };
+};
+
+var slap = 0;
+KeyboardController({
+    37: function() { //LEFT
+		if (x>-6){ x -= 4; }
+		//clear();
+		norm = 2;
+	},
+    38: function() { //UP
+		if (y>0){ y -= 4; }
+	},
+    39: function() { //RIGHT
+		if (x<744){ x += 4; }
+		//clear();
+		norm = 0; 
+	},
+    40: function() { //DOWN
+		if (y<436){ y += 4; } 
+	},
+	83: function() { //SLAP
+		//document.getElementById('cursor');
+		clear();
+		//var i = setTimeout(function(){norm = 1;},1000);
+		user(1);
+		slap++;
+		document.getElementById('text').innerHTML = "slap: "+slap;
+		//clearTimeout(i);
+	}
+}, 20);
+
+
+init();
+
+var myListener = new Object();
+myListener.onKeyDown = function () {
+    //trace ("You pressed a key.");
+}
+myListener.onKeyUp = function () {
+    //trace ("You released a key.");
+}
+Key.addListener(myListener);
+
+
+</script>
+
+</body>
+</html>
