@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>MOUSE & TOUCH TRACKER</title>
+<style>
+html, body { 
+     position:absolute; 
+     width:100%; 
+     height:100%; 
+     margin: 0 auto; 
+     padding: 0; 
+     overflow: hidden; 
+}
+#movespace {
+	position:relative;
+	background-color:#CF0;
+	width:600px;
+	height:400px;
+	top:-10px;
+	margin:auto;
+}	
+</style>
+<script src="modernizr.js" language="JavaScript" type="text/javascript"></script>
+</head>
+<body>
+<script>
+
+/*
+document.addEventListener('touchmove', function(event) {
+	event.preventDefault();
+}, false); */
+
+
+//http://www.ibm.com/developerworks/library/wa-games/
+
+var screenY = screen.availHeight;
+var screenX = screen.availWidth;
+var windowY = window.innerHeight;
+var windowX = window.innerWidth;
+var tempX = 0;
+var tempY = 0;
+var xOffset = 0;
+var yOffset = 0;
+
+function getPosition(e) {
+    var position = {x: null, y: null};
+    
+    if (Modernizr.touch) { //global variable detecting touch support
+        if (e.touches && e.touches.length > 0) {
+            position.x = e.touches[0].pageX;
+            position.y = e.touches[0].pageY;
+        }
+    }
+    else {
+        position.x = e.pageX;
+        position.y = e.pageY;
+    }
+    //getCursorXY;
+    //return position;
+	
+	yOffset = document.getElementById('movespace').offsetTop;
+	xOffset = document.getElementById('movespace').offsetLeft;
+	tempX = position.x-xOffset;
+	tempY = position.y-yOffset;
+
+	if (tempX < 0){tempX = 0;}
+	if (tempX > 600){tempX = 600;}
+	if (tempY < 0){tempY = 0;}
+	if (tempY > 400){tempY = 400;}  
+	
+	document.Show.MouseX.value = tempX;
+	document.Show.MouseY.value = tempY;
+	document.Show.ScreenX.value = screenX;
+	document.Show.ScreenY.value = screenY;
+	document.Show.WindowX.value = windowX;
+	document.Show.WindowY.value = windowY;
+	document.Show.MoveX.value = xOffset;
+	document.Show.MoveY.value = yOffset;
+	return true;
+}
+
+document.onmousemove = getPosition;
+document.touchmove = getPosition;
+
+
+</script>
+<font face="Courier New, Courier, monospace">
+
+<form name="Show"><hr>
+CURSOR X <input type="text" name="MouseX" value="0" size="4"> <br>
+CURSOR Y <input type="text" name="MouseY" value="0" size="4"> <hr>
+
+MOVESPACE OFFSET X <input type="text" name="MoveX" value="0" size="4"> &nbsp; 
+SCREEN X <input type="text" name="ScreenX" value="0" size="4"> &nbsp; 
+WINDOW X <input type="text" name="WindowX" value="0" size="4"><br>
+MOVESPACE OFFSET Y <input type="text" name="MoveY" value="0" size="4"> &nbsp; 
+SCREEN Y <input type="text" name="ScreenY" value="0" size="4"> &nbsp; 
+WINDOW Y <input type="text" name="WindowY" value="0" size="4"><hr>
+</form>
+
+<div id="movespace"><br>
+ <center>MOVESPACE 600x400</center></div>
+</body>
+</html>
