@@ -8,7 +8,6 @@
 <script src="tarotcards.js" language="JavaScript" type="text/javascript"></script>
 <script type="text/javascript" src="jquery.min.js"></script>
 <script>
-
 //fade in/out and redirect functionality
 function redirectPage() {
   window.location = linkLocation;
@@ -27,7 +26,6 @@ $('a').click(function(event) {
     }
   });
 });
-
 //create modal windows
 function makeModals() {
 	for(n=0;n<tarotcards.length;n++){
@@ -36,7 +34,6 @@ function makeModals() {
 		//document.write("here i am. ");
 	}
 }
-
 //display all tarot cards by group
 function displayallCards(){
 	document.write("<h4>Major Arcana</h4>");
@@ -60,50 +57,37 @@ function displayallCards(){
 		document.write("<div id='smcard'><a href='#dialog"+n+"' name='modal' class='modal' alt='"+tarotcards[n].card+"' title='"+tarotcards[n].card+"'><img src='"+tarotcards[n].image+"' width=50 height=85 border=0></a></div>");	
 	}
 }
-
 function playMP3(id){
 	document.getElementById(id).play();
 }
-
 //modal window functions
 $(document).ready(function() {	
-	
 	$("a[name=modal]").click(function(e) {
-		
 		//Cancel the link behavior
 		e.preventDefault();
-		
 		//Get the A tag
 		//var id = $(this).children('a').attr('href');
 		var id = $(this).attr('href');
-		
 		if (id){
 			playMP3('flip');
-			
 			//Get the screen height and width
 			var maskHeight = $(document).height();
 			var maskWidth = $(window).width();
-		
 			//Set heigth and width to mask to fill up the whole screen
 			$('#mask').css({'width':maskWidth,'height':maskHeight});
-			
 			//transition effect		
 			$('#mask').fadeIn(200);	
 			$('#mask').fadeTo("fast",0.8);	
-		
 			//Get the window height and width
 			var winH = $(window).height();
 			var winW = $(window).width();
-				  
 			//Set the popup window to center
 			$(id).css('top',  winH/2-$(id).height()/1.8);
 			$(id).css('left', winW/2-$(id).width()/1.9);
-			
 			//transition effect
 			$(id).fadeIn(500); 
 		}
 	});
-	
 	//if close button is clicked
 	$('.window .close').click(function (e) {
 		//Cancel the link behavior
@@ -112,29 +96,22 @@ $(document).ready(function() {
 		$('#mask').hide();
 		$('.window').hide();
 	});		
-	
 	//if mask is clicked
 	$('#mask').click(function () {
 		playMP3('flip');
 		$(this).hide();
 		$('.window').hide();
 	});			
-
 	$(window).resize(function () {
-	 
  		var box = $('#boxes .window');
- 
         //Get the screen height and width
         var maskHeight = $(document).height();
         var maskWidth = $(window).width();
-      
         //Set height and width to mask to fill up the whole screen
         $('#mask').css({'width':maskWidth,'height':maskHeight});
-               
         //Get the window height and width
         var winH = $(window).height();
         var winW = $(window).width();
-
         //Set the popup window to center
         box.css('top',  winH/2 - box.height()/2);
         box.css('left', winW/2 - box.width()/2);
@@ -144,13 +121,12 @@ $(document).ready(function() {
 </head>
 <body style="display:none;">
 
-<div id="enclosure" style="">
+<div id="enclosuredeck" style="">
 	<div id="enclosure1">
 <script>
 displayallCards();
 </script>
 	</div>
-    
 </div>
 
 <div id="boxes">

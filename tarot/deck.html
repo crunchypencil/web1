@@ -9,7 +9,6 @@
 <script src="tarotcards.js" language="JavaScript" type="text/javascript"></script>
 <script src="tarotcardsinverted.js" language="JavaScript" type="text/javascript"></script>
 <script>
-
 //fade in/out and redirect functionality
 function redirectPage() {
   window.location = linkLocation;
@@ -28,8 +27,6 @@ $('a').click(function(event) {
     }
   });
 });
-
-
 //Fisher-Yates shuffle
 function fisherYates ( myArray ) {
 	var i = myArray.length, j, tempi, tempj;
@@ -42,39 +39,31 @@ function fisherYates ( myArray ) {
 		myArray[j] = tempi;
    }
 }
-
 //temporary array for tarotcards array
 var arrayShuff = new Array();
 for (var i=0;i< tarotcards.length;i++){
 	arrayShuff.push(i);
 }
-
 //shuffle temporary array
 fisherYates(arrayShuff);
-
 //temporary array, push shuffled tarotcards into it
 var temp_tarotcards = new Array();
 for (i=0;i < arrayShuff.length;i++){
 	temp_tarotcards.push(tarotcards[arrayShuff[i]]);
 }
-
 //and use it to re-remake tarotcards array 
 tarotcards = new Array();
 tarotcards = temp_tarotcards.slice(0);
-
 //temporary array, push shuffled tarotcardsinverted into it
 temp_tarotcards = new Array();
 for (i=0;i < arrayShuff.length;i++){
 	temp_tarotcards.push(tarotcardsinverted[arrayShuff[i]]);
 }
-
 //and use it to re-make tarotcardsinverted array
 tarotcardsinverted = new Array();
 tarotcardsinverted = temp_tarotcards.slice(0);
-
 //new array for use with both regular and inverted cards
 cardstack = new Array();
-
 //random up or down for each i & add from appropriate shuffled arrays into it
 for (i=0;i<tarotcards.length;i++){
 	 var ud = upDown(0,1);  
@@ -84,7 +73,6 @@ for (i=0;i<tarotcards.length;i++){
 		 cardstack[i] = tarotcards[i]; 
 	 }
 }
-
 //displays the deck
 function printEm(i) {
 	if(i<cardstack.length){
@@ -94,23 +82,18 @@ function printEm(i) {
 	}
 	playMP3('shuffle');
 }
-
-
 //move a card from the right stack to display
 function takeaCard(ele) { 
 	ele.innerHTML = "";
 	playMP3('pick');
 }
-
 function playMP3(id){
 	document.getElementById(id).play();
 }
-
 //randomizer function
 function upDown(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min);
 }
-
 //start before 0
 var n=-1;
 //advance throught the deck
@@ -126,35 +109,32 @@ function takeOne() {
 		$("#inv1,#inv2").fadeIn("slow",function(){});
 	}
 }
-
 </script>
 </head>
 <body style="display:none;">
-<div id="enclosure">
-    <div id="enclosure2">
-    
+<div id="enclosuredeck">
+    <div id="enclosure2deck">
         <div id="cardfaceenclosure">
-        
             <div id="cardface">
-                <div style="border:2px dashed #666;border-radius: 8px; width:300px;height:510px;"></div>
+                <div style="border:2px dashed #666;border-radius:14px;-webkit-border-radius:14px;-moz-border-radius:14px; width:300px;height:510px;"></div>
             </div>
             <div style="clear:both; padding-top:10px; text-align:center;">
-            <a href="#" onclick='window.location.reload()' class='btn'>reshuffle</a>
+                <a href="#" onclick='window.location.reload()' class='btn'>reshuffle</a>
             </div>
         </div>
         <div id="text"><p>
-            <div id="message"></div>
-        </div>
-     </div>  
-     <div id="enclosure3">
+            <div id="message"></div></p>
+    	</div>
+	</div>  
+    <div id="enclosure3deck">
         <div id="cardbox">
 <script>
 printEm(0);
 </script>  
         </div>
 	</div>
-	
-        
+</div>
+
 <div id="myDiv" style="position:fixed; bottom:10px; left:10%; right:10%; height:20px; text-align:center;"><h5><a href="index.html">fate browser 1.0</a>&nbsp;&nbsp;&nbsp;&nbsp;by&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://crunchypencil.com/">crunchy pencil design</a></h5></div>
 
 <audio src="shuffling-cards-1.mp3" id="shuffle" preload="auto"></audio>

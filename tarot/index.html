@@ -13,7 +13,7 @@ function redirectPage() {
   window.location = linkLocation;
 }
 $(document).ready(function() {
-$("body").fadeIn(2000);
+$("body").fadeIn(500);
 $('a').click(function(event) {
     if (this.href == "" || this.href == null) {
       event.preventDefault();
@@ -26,25 +26,26 @@ $('a').click(function(event) {
     }
   });
 });
-
 function playMP3(id){
 	document.getElementById(id).play();
 }
-
 </script>
 </head>
 <body style="display:none;">
-<div id="enclosure" style="">
-	
-		<div style="text-align:center;width:100%"><h1><span id="fate">fate</span><br />BrowseR</h1><h2><a href="pastpresentfuture.html" onclick="playMP3('flip');">tarot reading</a>&nbsp;&nbsp;&nbsp;<span id="fate">&sect;</span>&nbsp;&nbsp;&nbsp;<a href="wholedeck.html" onclick="playMP3('flip');">deck</a>&nbsp;&nbsp;&nbsp;<span id="fate">&sect;</span>&nbsp;&nbsp;&nbsp;<a href="deck.html" onclick="playMP3('flip');">free shuffle</a></h2></div>
 
-    
+<div id="enclosure" style="">
+		<div style="text-align:center;width:100%"><h1><span id="fate">fate</span><br />BrowseR<br>
+<div id="fate" style="font-size:70px;margin-top:10px;">t&nbsp;&nbsp;a&nbsp;&nbsp;r&nbsp;&nbsp;o&nbsp;&nbsp;t</div></h1><h2><a href="pastpresentfuture.html" onclick="playMP3('flip');">past-present-future</a>&nbsp;&nbsp;<span id="fate">&sect;</span>&nbsp;&nbsp;<a href="celticcross.html" onclick="playMP3('flip');">celtic cross</a><br>
+<a href="deck.html" onclick="playMP3('flip');">free shuffle</a>&nbsp;&nbsp;<span id="fate">&sect;</span>&nbsp;&nbsp;<a href="wholedeck.html" onclick="playMP3('flip');">entire deck</a></h2>
+        </div>
 </div>
 
 
-<audio src="place.mp3" id="flip" preload="auto"></audio>
-
 <div id="myDiv" style="position:fixed; bottom:10px; left:10%; right:10%; height:20px; text-align:center;"><h5>fate browser 1.0 &nbsp;&nbsp;&nbsp;&nbsp;by&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://crunchypencil.com/">crunchy pencil design</a></h5></div>
+
+<audio src="shuffling-cards-1.mp3" id="shuffle" preload="auto"></audio>
+<audio src="turnover.mp3" id="pick" preload="auto"></audio>
+<audio src="place.mp3" id="flip" preload="auto"></audio>
 
 </body>
 </html>
