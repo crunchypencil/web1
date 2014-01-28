@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Celtic Cross</title>
+<link href='http://fonts.googleapis.com/css?family=IM+Fell+DW+Pica+SC|IM+Fell+Double+Pica:400,400italic' rel='stylesheet' type='text/css'>
+<link href="style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="jquery.min.js"></script>
+<script src="tarotcards.js" language="JavaScript" type="text/javascript"></script>
+<script src="tarotcardsinverted.js" language="JavaScript" type="text/javascript"></script>
+<script>
+//fade in/out and redirect functionality
+function redirectPage() {
+  window.location = linkLocation;
+}
+$(document).ready(function() {
+$("body").fadeIn(500);
+$('a').click(function(event) {
+    if (this.href == "" || this.href == null) {
+      event.preventDefault();
+      return;
+    }
+    if ((this.href.indexOf("#") == -1) && (this.href.indexOf("mailto:") == -1) && (this.href.indexOf("javascript:") == -1) && (this.target != "_blank")) {
+      event.preventDefault();
+      linkLocation = this.href;
+      $("body").fadeOut(500, redirectPage);
+    }
+  });
+});
+//Fisher-Yates shuffle
+function fisherYates ( myArray ) {
+	var i = myArray.length, j, tempi, tempj;
+	if ( i === 0 ) return false;
+	while ( --i ) {
+		j = Math.floor( Math.random() * ( i + 1 ) );
+		tempi = myArray[i];
+		tempj = myArray[j];
+		myArray[i] = tempj;
+		myArray[j] = tempi;
+   }
+}
+//temporary array for tarotcards array
+var arrayShuff = new Array();
+for (var i=0;i< tarotcards.length;i++){
+	arrayShuff.push(i);
+}
+//shuffle temporary array
+fisherYates(arrayShuff);
+//temporary array, push shuffled tarotcards into it
+var temp_tarotcards = new Array();
+for (i=0;i < arrayShuff.length;i++){
+	temp_tarotcards.push(tarotcards[arrayShuff[i]]);
+}
+//and use it to re-remake tarotcards array 
+tarotcards = new Array();
+tarotcards = temp_tarotcards.slice(0);
+//temporary array, push shuffled tarotcardsinverted into it
+temp_tarotcards = new Array();
+for (i=0;i < arrayShuff.length;i++){
+	temp_tarotcards.push(tarotcardsinverted[arrayShuff[i]]);
+}
+//and use it to re-make tarotcardsinverted array
+tarotcardsinverted = new Array();
+tarotcardsinverted = temp_tarotcards.slice(0);
+//new array for use with both regular and inverted cards
+cardstack = new Array();
+//random up or down for each i & add from appropriate shuffled arrays into it
+for (i=0;i<tarotcards.length;i++){
+	 var ud = upDown(0,1);  
+	 if (ud==1) {  
+		 cardstack[i] = tarotcardsinverted[i]; 
+	 } else {
+		 cardstack[i] = tarotcards[i]; 
+	 }
+}
+//displays the deck
+function printEm(i) {
+	if(i<cardstack.length){
+		$("#cardbox").append("<div id='card'><a href='#' onclick='takeaCard(this)'><img src='back2.png' width=135 height=213 border=0 /></a></div>");
+		i++;
+		setTimeout("printEm("+i+")", 5);
+	}
+	playMP3('shuffle');
+}
+var count=0;
+//move a card from the right stack to display
+function takeaCard(ele) { 
+	if (count<10) {
+		ele.innerHTML = "";
+		$("#celtic"+count).html("<a href='#dialog"+count+"' name='modal' class='modal'><img src='"+cardstack[count].image+"' width=77 height=130 border=0 alt="+cardstack[count].card+" title="+cardstack[count].card+"></a>");
+		$("#celtic"+count).css("border","2px dashed #fff");
+		//$("#threecard"+count).css("background","url('back.jpg') no-repeat right top");
+		//$("#threecard"+count).html("<a href='#' name='tmep' id='tmep' class='tmep'>link</a>");
+		count++;
+		playMP3('pick');
+	}
+}
+//create modal windows
+function makeModals() {
+	for(n=0;n<10;n++){
+		$("#boxes").append("<div id='dialog"+n+"' class='window'><div id='closebox'><a href='#' class='close'>x</a></div><div id='cardface'><img src='"+cardstack[n].image+"' width=300 height=510 align=left alt="+cardstack[n].card+" title="+cardstack[n].card+"></div><div id='text'><h2>"+cardstack[n].card+"</h2><p>"+cardstack[n].description+"</p><p><span class='descr'>Divinatory Meanings:</span> <i>"+cardstack[n].interpretation1+"</i></p><p><span class='descr'>Inverted Meanings:</span> <i>"+cardstack[n].interpretation0+"</i></p></div></div>");
+	}
+}
+function playMP3(id){
+	document.getElementById(id).play();
+}
+//randomizer function
+function upDown(min, max) {
+	return Math.floor(Math.random() * (max - min + 1) + min);
+}
+//modal window functions
+$(document).ready(function() {	
+	$("[id*=celtic]").click(function(e) {
+		//Cancel the link behavior
+		e.preventDefault();
+		//Get the A tag
+		var id = $(this).children('a').attr('href');
+		if (id){
+			playMP3('flip');
+			//Get the screen height and width
+			var maskHeight = $(document).height();
+			var maskWidth = $(window).width();
+			//Set heigth and width to mask to fill up the whole screen
+			$('#mask').css({'width':maskWidth,'height':maskHeight});
+			//transition effect		
+			$('#mask').fadeIn(200);	
+			$('#mask').fadeTo("fast",0.8);	
+			//Get the window height and width
+			var winH = $(window).height();
+			var winW = $(window).width();
+			//Set the popup window to center
+			$(id).css('top',  winH/2-$(id).height()/1.8);
+			$(id).css('left', winW/2-$(id).width()/1.9);
+			//transition effect
+			$(id).fadeIn(500); 
+		}
+	});
+	//if close button is clicked
+	$('.window .close').click(function (e) {
+		//Cancel the link behavior
+		e.preventDefault();
+		playMP3('flip');
+		$('#mask').hide();
+		$('.window').hide();
+	});		
+	//if mask is clicked
+	$('#mask').click(function () {
+		playMP3('flip');
+		$(this).hide();
+		$('.window').hide();
+	});			
+	$(window).resize(function () {
+ 		var box = $('#boxes .window');
+        //Get the screen height and width
+        var maskHeight = $(document).height();
+        var maskWidth = $(window).width();
+        //Set height and width to mask to fill up the whole screen
+        $('#mask').css({'width':maskWidth,'height':maskHeight});
+        //Get the window height and width
+        var winH = $(window).height();
+        var winW = $(window).width();
+        //Set the popup window to center
+        box.css('top',  winH/2 - box.height()/2);
+        box.css('left', winW/2 - box.width()/2);
+	});
+});
+</script>
+</head>
+<body style="display:none;">
+<div id="enclosuredeck">
+    <div id="enclosure2deck">
+        
+        	<div id="numid1">1</div><div id="celtic0"></div>
+            <div id="numid2">2</div><div id="celtic1"></div>
+            <div id="numid3">3</div><div id="celtic2"></div>
+            <div id="numid4">4</div><div id="celtic3"></div>
+            <div id="numid5">5</div><div id="celtic4"></div>
+            <div id="numid6">6</div><div id="celtic5"></div>
+            <div id="numid7">7</div><div id="celtic6"></div>
+            <div id="numid8">8</div><div id="celtic7"></div>
+            <div id="numid9">9</div><div id="celtic8"></div>
+            <div id="numid10">10</div><div id="celtic9"></div>
+            <div id="celtickey">
+                <ol>
+                    <li>What covers the querent</li>
+                    <li>What crosses the querent</li>
+                    <li>What crowns the querent</li>
+                    <li>What is beneath the querent</li>
+                    <li>What is behind the querent</li>
+                    <li>What is before the querent</li>
+                    <li>The querent</li>
+                    <li>The querent's house</li>
+                    <li>Hopes or fears</li>
+                    <li>What will come</li>
+                </ol> 	
+            </div>
+            <div style="position:absolute;left:115px;top:500px;">            
+                    <a href="#" onclick='window.location.reload()' class=btn>reshuffle</a>
+            </div>
+        
+    </div>
+	<div id="enclosure3deck">
+        <div id="cardbox">
+<script>
+printEm(0);
+</script>  
+        </div>
+	</div>
+    <div id="boxes">
+<script>
+makeModals();  
+</script>
+        <div id="mask"></div>
+    </div>
+</div> 
+
+<div id="myDiv" style="position:fixed; bottom:10px; left:10%; right:10%; height:20px; text-align:center;"><h5><a href="index.html">fate browser 1.0</a>&nbsp;&nbsp;&nbsp;&nbsp;by&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://crunchypencil.com/">crunchy pencil design</a></h5></div> 
+
+<audio src="shuffling-cards-1.mp3" id="shuffle" preload="auto"></audio>
+<audio src="turnover.mp3" id="pick" preload="auto"></audio>
+<audio src="place.mp3" id="flip" preload="auto"></audio>
+
+</body>
+</html>
