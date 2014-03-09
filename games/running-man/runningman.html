@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>KEYPRESS</title>
+<style>
+body{ background:#000;
+margin:0;
+}
+#hand{
+	position: absolute;
+	top: 100px;
+	left: 100px;
+	width:64px;
+	height:64px;
+	background-image:url(running_128.gif);
+	background-size:64px 64px;
+}
+#area{
+	position: absolute;
+	top: 100px;
+	left: 100px;
+	width: 800px;
+	height: 600px;
+	background-color: #ffcc00;;
+}
+</style>
+<script>
+
+// Keyboard input with customisable repeat (set to 0 for no key repeat)
+//
+function KeyboardController(keys, repeat) {
+    // Lookup of key codes to timer ID, or null for no repeat
+    //
+    var timers= {};
+
+    // When key is pressed and we don't already think it's pressed, call the
+    // key action callback and set a timer to generate another one after a delay
+    //
+    document.onkeydown= function(event) {
+        var key= (event || window.event).keyCode;
+        if (!(key in keys))
+            return true;
+        if (!(key in timers)) {
+            timers[key]= null;
+            keys[key]();
+            if (repeat!==0)
+                timers[key]= setInterval(keys[key], repeat);
+        }
+        return false;
+    };
+
+    // Cancel timeout and mark key as released on keyup
+    //
+    document.onkeyup= function(event) {
+        var key= (event || window.event).keyCode;
+        if (key in timers) {
+            if (timers[key]!==null)
+                clearInterval(timers[key]);
+            delete timers[key];
+        }
+		// cancels the active animation
+		document.getElementById('hand').style.backgroundImage = "url(running_128.gif)";
+    };
+
+    // When window is unfocused we may not get key events. To prevent this
+    // causing a key to 'get stuck down', cancel all held keys
+    //
+    window.onblur= function() {
+        for (key in timers)
+            if (timers[key]!==null)
+                clearInterval(timers[key]);
+        timers= {};
+    };
+};
+
+
+// Arrow key movement. 
+//
+var lf = 100;
+var tp = 100;
+var dir;
+
+KeyboardController({
+    37: function() { 
+		if (lf>0){
+			lf -= 4; 
+			document.getElementById('hand').style.left = lf+"px";
+			document.getElementById('hand').style.backgroundImage = "url(running_128l.gif)"; 
+			dir = 37;
+		}
+	},
+    38: function() { 
+		if (tp>6){
+			tp -= 4; 
+			document.getElementById('hand').style.top = tp+"px"; 
+			if (dir==39) { 
+				document.getElementById('hand').style.backgroundImage = "url(running_128r.gif)";
+			} else {
+				document.getElementById('hand').style.backgroundImage = "url(running_128l.gif)";
+			}
+			dir = 38;
+		}
+	},
+    39: function() { 
+		if (lf<736){
+			lf += 4; 
+			document.getElementById('hand').style.left = lf+"px"; 
+			document.getElementById('hand').style.backgroundImage = "url(running_128r.gif)";
+			dir = 39;
+		}
+	},
+    40: function() { 
+		if (tp<530){
+			tp += 4; 
+			document.getElementById('hand').style.top = tp+"px"; 
+			if (dir==39) {
+				document.getElementById('hand').style.backgroundImage = "url(running_128r.gif)";
+			} else {
+				document.getElementById('hand').style.backgroundImage = "url(running_128l.gif)";
+			}
+			dir = 40;
+		}
+	}
+}, 30);
+
+
+</script>
+</head>
+<body onLoad="Load();" onKeyDown="Down(event)" onKeyUp="Up(event)">
+<div id="area">
+    <div id="hand"></div>
+</div>
+</body>
+</html>
