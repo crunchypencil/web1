@@ -2,20 +2,10 @@
 <html>
 <head>
 <meta name="robots" content="noindex" />
-<title>Untitled Document</title>
-<style type="text/css">
-.tiny {
-	font-family: Georgia, Georgia, "Times New Roman", Times, serif;
-	font-style:italic;
-	font-weight:normal;
-}
-</style>
 </head>
 
 <body>
-<h3 class="tiny">Crunchy Pencil Code Vault</h3>
-<blockquote style="background-color:#FFC600;padding:10px;font-family:'Courier New', Courier, monospace;">
-
+<blockquote style="background-color:#FFF;padding:13px;font-family:'Courier New', Courier, monospace;font-weight:bold;">
 <?php
 
 $dir="."; // Directory where files are stored
