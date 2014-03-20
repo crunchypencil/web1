@@ -1,0 +1,520 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>The Input Garden</title>
+<script src="jquery.min.js"></script>
+<style>
+body{ 
+	background:#000;
+	margin:0;
+	overflow:hidden;
+}
+#hand{
+	position: absolute;
+	top: 100px;
+	left: 100px;
+	width:64px;
+	height:64px;
+	background-image:url(running_128.gif);
+	background-size:64px 64px;
+}
+#key-a{
+	position: absolute;
+	top: 424px;
+	left: 12px;
+	width:64px;
+	height:64px;
+	background-image:url(keys-a.png);
+	background-size:64px 64px;
+}
+#key-s{
+	position: absolute;
+	top: 424px;
+	left: 76px;
+	width:64px;
+	height:64px;
+	background-image:url(keys-s.png);
+	background-size:64px 64px;
+}
+#key-w{
+	position: absolute;
+	top: 360px;
+	left: 76px;
+	width:64px;
+	height:64px;
+	background-image:url(keys-w.png);
+	background-size:64px 64px;
+}
+#key-d{
+	position: absolute;
+	top: 424px;
+	left: 140px;
+	width:64px;
+	height:64px;
+	background-image:url(keys-d.png);
+	background-size:64px 64px;
+}
+#cursor-point{
+	position: absolute;
+	top: 360px;
+	left: 140px;
+	width:64px;
+	height:64px;
+	background-image:url(cursor-128.png);
+	background-size:64px 64px;
+}
+#cursor-hand{
+	position: absolute;
+	top: 360px;
+	left: 12px;
+	width:64px;
+	height:64px;
+	background-image:url(hand_cursor-128.png);
+	background-size:64px 64px;
+}
+#key-y{
+	position: relative;
+	float:left;
+	width:64px;
+	height:64px;
+	background-image:url(keys-y-up.png);
+	background-size:64px 64px;
+	z-index:100;
+}
+#key-y:hover{
+	background-image:url(keys-y-dn.png);
+	background-size:64px 64px;
+}
+#key-n{
+	position: relative;
+	float:left;
+	width:64px;
+	height:64px;
+	background-image:url(keys-n-up.png);
+	background-size:64px 64px;
+	z-index:100;
+}
+#key-n:hover{
+	background-image:url(keys-n-dn.png);
+	background-size:64px 64px;
+}
+#link1{
+	position: absolute;
+	top: 100px;
+	left: 500px;
+	width:256px;
+	height:64px;
+	background-image:url(palm_tree-128.png);
+	background-size:64px 64px;
+	background-repeat:no-repeat;
+	z-index:100;
+}
+#link2{
+	position: absolute;
+	top: 220px;
+	left: 500px;
+	width:256px;
+	height:64px;
+	background-image:url(palm_tree-128.png);
+	background-size:64px 64px;
+	background-repeat:no-repeat;
+	z-index:100;
+}
+#link3{
+	position: absolute;
+	top: 340px;
+	left: 500px;
+	width:256px;
+	height:64px;
+	background-image:url(palm_tree-128.png);
+	background-size:64px 64px;
+	background-repeat:no-repeat;
+	z-index:100;
+}
+#linkarea1{
+	position: absolute;
+	top: 86px;
+	left: 564px;
+	width:256px;
+	height:64px;
+	visibility:hidden;
+}
+#linkarea2{
+	position: absolute;
+	top: 206px;
+	left: 564px;
+	width:256px;
+	height:64px;
+	visibility:hidden;
+}
+#linkarea3{
+	position: absolute;
+	top: 326px;
+	left: 564px;
+	width:256px;
+	height:64px;
+	visibility:hidden;
+}
+#area{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -400px;
+    margin-top: -250px;
+	width: 800px;
+	height: 500px;
+	background-color: #ffcc00;;
+}
+.logo {
+	position:absolute;
+	top:-45px;
+	right:-225px;
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-style:italic;
+	font-size:60px;
+	color:#F60;
+	margin-top: 250px;
+	opacity:0.5;
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+}
+p {
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-style:italic;
+	line-height:14px;
+	margin: 0 0 0 8px;
+	padding:0;
+	color:#222222;
+}
+</style>
+<script>
+
+var lf = 100;
+var tp = 100;
+var tempY = 0;
+var tempX = 0;
+var moveYoff = 0;
+var moveXoff = 0;
+//keeps user from setting another interval
+var moving = false;
+//var for cursor moving left
+var left = false;
+
+// Get mouse or touch XY variables
+function getCursorXY(e) {
+	var a = $('#area').offset();
+	moveYoff = Math.round(a.top); //offset for centered
+	moveXoff = Math.round(a.left);// #area div	
+	tempX = Math.round(e.pageX) - moveXoff - 32; //round up for touch 
+	tempY = Math.round(e.pageY) - moveYoff - 32; //and offset for image
+	
+	if (moving == false && tempY < 440 && tempY > 6 && tempX < 736 && tempX > 0) {
+		moveXY();
+	}
+	return true;
+}
+
+document.onmousedown = getCursorXY;
+document.touchstart = getCursorXY;
+
+// Move cursor to XY position
+function moveXY(){
+	var moveitXY = setInterval(function(){
+		moving = true;  
+		placeSniffer();
+		if (tempX > lf) {
+			//if (lf < 736){
+				lf += 1; 
+				$('#hand').css({ "left" : lf+"px" });
+				$('#hand').css({ backgroundImage:"url(running_128r.gif)"});
+				left = false;
+			//}
+		}
+		if (tempX < lf) {
+			//if (lf > 0){
+				lf -= 1; 
+				$('#hand').css({ "left" : lf+"px" });
+				$('#hand').css({ backgroundImage:"url(running_128l.gif)"});
+				left = true;
+			//}
+		} 
+		if (tempY > tp) {
+			//if (tp < 430){
+				if (left==true) {
+					tp += 1; 
+					$('#hand').css({ "top" : tp+"px" });
+					$('#hand').css({ backgroundImage:"url(running_128l.gif)"});
+				} else {
+					tp += 1; 
+					$('#hand').css({ "top" : tp+"px" });
+					$('#hand').css({ backgroundImage:"url(running_128r.gif)"});
+				}
+			//}
+		}
+		if (tempY < tp) {
+			//if (tp < 430){
+				if (left==true) {
+					tp -= 1; 
+					$('#hand').css({ "top" : tp+"px" });
+					$('#hand').css({ backgroundImage:"url(running_128l.gif)"});
+				} else {
+					tp -= 1; 
+					$('#hand').css({ "top" : tp+"px" });
+					$('#hand').css({ backgroundImage:"url(running_128r.gif)"});
+				}
+			//}
+		}
+		
+		// Set div back to resting state
+		if (tempY == tp && tempX == lf) {
+			$('#hand').css({ backgroundImage:"url(running_128.gif)"});
+			clearInterval(moveitXY);
+			moving = false;
+		}
+	},10);
+}
+	
+// Keyboard input with customisable repeat (set to 0 for no key repeat)
+// With a key down, this removes the pause after the first move on a moving object
+//http://stackoverflow.com/questions/3691461/remove-key-press-delay-in-javascript
+function KeyboardController(keys, repeat) {
+    // Lookup of key codes to timer ID, or null for no repeat
+    var timers= {};
+
+    // When key is pressed and we don't already think it's pressed, call the
+    // key action callback and set a timer to generate another one after a delay
+    document.onkeydown= function(event) {
+		//returnKey();
+        var key= (event || window.event).keyCode;
+		
+        if (!(key in keys))
+            return true;
+        if (!(key in timers)) {
+            timers[key]= null;
+            keys[key]();
+            if (repeat!==0)
+                timers[key]= setInterval(keys[key], repeat);
+        }
+		placeSniffer();
+		//returnKey();
+        return false;
+    };
+
+    // Cancel timeout and mark key as released on keyup
+    document.onkeyup= function(event) {
+        var key= (event || window.event).keyCode;
+        if (key in timers) {
+            if (timers[key]!==null)
+                clearInterval(timers[key]);
+            delete timers[key];
+        }
+		// Sets the div to resting state
+		document.getElementById('hand').style.backgroundImage = "url(running_128.gif)";
+    };
+
+    // When window is unfocused we may not get key events. To prevent this
+    // causing a key to 'get stuck down', cancel all held keys
+    window.onblur= function() {
+        for (key in timers)
+            if (timers[key]!==null)
+                clearInterval(timers[key]);
+        timers= {};
+    };
+};
+
+var dir;
+
+// Keyboard commands
+KeyboardController({
+    37: function() { //left
+		if (lf>0){
+			lf -= 1; 
+			$('#hand').css({ "left" : lf+"px" });
+			$('#hand').css({ backgroundImage:"url(running_128l.gif)"}); 
+			dir = 37;
+		}
+	},
+    38: function() { //up
+		if (tp>6){
+			tp -= 1; 
+			$('#hand').css({ "top" : tp+"px" });
+			if (dir==37) { // avoids 'shake' error constantly swapping l and r
+				$('#hand').css({ backgroundImage:"url(running_128l.gif)"});
+			} else {
+				$('#hand').css({ backgroundImage:"url(running_128r.gif)"});
+			}
+			dir = 38;
+		}
+	},
+    39: function() { //right
+		if (lf<736){
+			lf += 1; 
+			$('#hand').css({ "left" : lf+"px" });
+			$('#hand').css({ backgroundImage:"url(running_128r.gif)"});
+			dir = 39;
+		}
+	},
+    40: function() { //down
+		if (tp<430){
+			tp += 1; 
+			$('#hand').css({ "top" : tp+"px" }); 
+			if (dir==37) { // avoids 'shake' error constantly swapping l and r
+				$('#hand').css({ backgroundImage:"url(running_128l.gif)"});
+			} else {
+				$('#hand').css({ backgroundImage:"url(running_128r.gif)"});
+			}
+			dir = 40;
+		}
+	},
+	65: function() { //left A
+		if (lf>0){
+			lf -= 1; 
+			$('#hand').css({ "left" : lf+"px" });
+			$('#hand').css({ backgroundImage:"url(running_128l.gif)"}); 
+			dir = 65;
+		}
+	},
+    87: function() { //up W
+		if (tp>6){
+			tp -= 1; 
+			$('#hand').css({ "top" : tp+"px" }); 
+			if (dir==65) { // avoids 'shake' error constantly swapping l and r
+				$('#hand').css({ backgroundImage:"url(running_128l.gif)"});
+			} else {
+				$('#hand').css({ backgroundImage:"url(running_128r.gif)"});
+			}
+			dir = 87;
+		}
+	},
+    68: function() { //right D
+		if (lf<736){
+			lf += 1; 
+			$('#hand').css({ "left" : lf+"px" }); 
+			$('#hand').css({ backgroundImage:"url(running_128r.gif)"});
+			dir = 68;
+		}
+	},
+    83: function() { //down S
+		if (tp<530){
+			tp += 1; 
+			$('#hand').css({ "top" : tp+"px" });
+			if (dir==65) { // avoids 'shake' error constantly swapping l and r
+				$('#hand').css({ backgroundImage:"url(running_128l.gif)"});
+			} else {
+				$('#hand').css({ backgroundImage:"url(running_128r.gif)"});
+			}
+			dir = 83;
+		}
+	},
+    89: function() { // Y key
+		if (vislink1 == true){
+			$('#linkarea1').children('#key-y').css({ backgroundImage:"url(keys-y-dn.png)"});
+			location.assign("http://www.google.com");
+		}
+		if (vislink2 == true){
+			$('#linkarea2').children('#key-y').css({ backgroundImage:"url(keys-y-dn.png)"});
+			location.assign("http://www.google.com");
+		}
+		if (vislink3 == true){
+			$('#linkarea3').children('#key-y').css({ backgroundImage:"url(keys-y-dn.png)"});
+			location.assign("http://www.google.com");
+		}
+	},
+    78: function() { // N key
+		if (vislink1 == true){
+			$('#linkarea1').children('#key-n').css({ backgroundImage:"url(keys-n-dn.png)"});
+			$('#linkarea1,#link1').css({ 'visibility':'hidden' });
+			vislink1no = true;
+		}
+		if (vislink2 == true){
+			$('#linkarea2').children('#key-n').css({ backgroundImage:"url(keys-n-dn.png)"});
+			$('#linkarea2,#link2').css({ 'visibility':'hidden' });
+			vislink2no = true;
+		}
+		if (vislink3 == true){
+			$('#linkarea3').children('#key-n').css({ backgroundImage:"url(keys-n-dn.png)"});
+			$('#linkarea3,#link3').css({ 'visibility':'hidden' });
+			vislink3no = true;
+		}
+	}
+}, 10);
+
+// for tracking link/layer visibilty 
+var vislink1 = false;
+var vislink2 = false;
+var vislink3 = false;
+var vislink1no = false;
+var vislink2no = false;
+var vislink3no = false;
+
+// location finder makes link areas visible upon contact
+function placeSniffer(){
+	if (lf>450 && lf<650 && tp>30 && tp<160 && vislink1no == false) {
+		vislink1 = true;
+		$('#linkarea1').css({ 'visibility':'visible' });
+	} else {
+		$('#linkarea1').css({ 'visibility':'hidden' });
+		vislink1 = false;
+	}
+	if (lf>450 && lf<650 && tp>150 && tp<260 && vislink2no == false) {
+		vislink2 = true;
+		$('#linkarea2').css({ 'visibility':'visible' });
+	} else {
+		$('#linkarea2').css({ 'visibility':'hidden' });
+		vislink2 = false;
+	}
+	if (lf>450 && lf<650 && tp>270 && tp<360 && vislink3no == false) {
+		vislink3 = true;
+		$('#linkarea3').css({ 'visibility':'visible' });
+	} else {
+		$('#linkarea3').css({ 'visibility':'hidden' });
+		vislink3 = false;
+	}
+}
+
+function hideMe(id) {
+	$(id).css({ 'visibility':'hidden' });
+}
+
+</script>
+</head>
+<body>
+<div id="area">
+	<span class="logo">the input garden</span>
+	<div id="key-a"></div>
+    <div id="key-s"></div>
+    <div id="key-d"></div>
+    <div id="key-w"></div>
+    <div id="cursor-point"></div>
+    <div id="cursor-hand"></div>
+    <div id="link1"></div>
+    <div id="link2"></div>
+    <div id="link3"></div>
+    <div id="linkarea1">
+    <p>Fate Browser</p>
+    <p>
+    	<div id="key-y"><a href="http://www.google.com"><img src="keys-blank.png" width=64 height=64 border=0></a></div>
+    	<div id="key-n"><a href="#" onclick="hideMe('#linkarea1,#link1');vislink1no=true"><img src="keys-blank.png" width=64 height=64 border=0></a></div>
+    </p>
+    </div>
+    <div id="linkarea2">
+    <p>Beer Defender</p>
+    <p>
+    	<div id="key-y"><a href="http://www.google.com"><img src="keys-blank.png" width=64 height=64 border=0></a></div>
+    	<div id="key-n"><a href="#" onclick="hideMe('#linkarea2,#link2');vislink2no=true"><img src="keys-blank.png" width=64 height=64 border=0></a></div>
+    </p>
+    </div>
+    <div id="linkarea3">
+    <p>IT Freakout</p>
+    <p>
+    	<div id="key-y"><a href="http://www.google.com"><img src="keys-blank.png" width=64 height=64 border=0></a></div>
+    	<div id="key-n"><a href="#" onclick="hideMe('#linkarea3,#link3');vislink3no=true"><img src="keys-blank.png" width=64 height=64 border=0></a></div>
+    </p>
+    </div>
+    <div id="hand"></div>
+</div>
+<div id="myDiv" style="position:fixed; bottom:10px; left:10%; right:10%; height:20px; text-align:center; font-family:Georgia, 'Times New Roman', Times, serif;font-size:12px; color:#fff;"><i></i> by <a href=""><i></i></a></div>
+</body>
+</html>
