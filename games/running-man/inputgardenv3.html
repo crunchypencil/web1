@@ -502,6 +502,10 @@ KeyboardController({
 			$('#linkarea3').children('#key-y').css({ backgroundImage:"url(keys-y-dn.png)"});
 			location.assign("http://www.google.com");
 		}
+		if (vislink4 == true){
+			$('#linkarea4').children('#key-y').css({ backgroundImage:"url(keys-y-dn.png)"});
+			launchWarning();
+		}
 	},
     78: function() { // N key
 		if (vislink1 == true){
@@ -517,6 +521,11 @@ KeyboardController({
 		if (vislink3 == true){
 			$('#linkarea3').children('#key-n').css({ backgroundImage:"url(keys-n-dn.png)"});
 			$('#linkarea3,#link3').css({ 'visibility':'hidden' });
+			vislink3no = true;
+		}
+		if (vislink4 == true){
+			$('#linkarea4').children('#key-n').css({ backgroundImage:"url(keys-n-dn.png)"});
+			$('#linkarea4,#link4').css({ 'visibility':'hidden' });
 			vislink3no = true;
 		}
 	}
