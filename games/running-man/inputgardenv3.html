@@ -1,0 +1,669 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>The Input Garden</title>
+<script src="jquery.min.js"></script>
+<style>
+body{ 
+	background:#000;
+	margin:0;
+	overflow:hidden;
+}
+#hand{
+	position: absolute;
+	top: 100px;
+	left: 100px;
+	width:64px;
+	height:64px;
+	background-image:url(running_128.gif);
+	background-size:64px 64px;
+}
+#key-a{
+	position: absolute;
+	top: 424px;
+	left: 12px;
+	width:64px;
+	height:64px;
+	background-image:url(keys-a.png);
+	background-size:64px 64px;
+}
+#key-s{
+	position: absolute;
+	top: 424px;
+	left: 76px;
+	width:64px;
+	height:64px;
+	background-image:url(keys-s.png);
+	background-size:64px 64px;
+}
+#key-w{
+	position: absolute;
+	top: 360px;
+	left: 76px;
+	width:64px;
+	height:64px;
+	background-image:url(keys-w.png);
+	background-size:64px 64px;
+}
+#key-d{
+	position: absolute;
+	top: 424px;
+	left: 140px;
+	width:64px;
+	height:64px;
+	background-image:url(keys-d.png);
+	background-size:64px 64px;
+}
+#cursor-point{
+	position: absolute;
+	top: 360px;
+	left: 140px;
+	width:64px;
+	height:64px;
+	background-image:url(cursor-128.png);
+	background-size:64px 64px;
+}
+#cursor-hand{
+	position: absolute;
+	top: 360px;
+	left: 12px;
+	width:64px;
+	height:64px;
+	background-image:url(hand_cursor-128.png);
+	background-size:64px 64px;
+}
+#key-y{
+	position: relative;
+	float:left;
+	width:64px;
+	height:64px;
+	background-image:url(keys-y-up.png);
+	background-size:64px 64px;
+	z-index:100;
+}
+#key-y:hover{
+	background-image:url(keys-y-dn.png);
+	background-size:64px 64px;
+}
+#key-n{
+	position: relative;
+	float:left;
+	width:64px;
+	height:64px;
+	background-image:url(keys-n-up.png);
+	background-size:64px 64px;
+	z-index:100;
+}
+#key-n:hover{
+	background-image:url(keys-n-dn.png);
+	background-size:64px 64px;
+}
+#link1{
+	position: absolute;
+	top: 100px;
+	left: 500px;
+	width:256px;
+	height:64px;
+	background-image:url(palm_tree-128.png);
+	background-size:64px 64px;
+	background-repeat:no-repeat;
+	z-index:100;
+}
+#link2{
+	position: absolute;
+	top: 220px;
+	left: 500px;
+	width:256px;
+	height:64px;
+	background-image:url(palm_tree-128.png);
+	background-size:64px 64px;
+	background-repeat:no-repeat;
+	z-index:100;
+}
+#link3{
+	position: absolute;
+	top: 340px;
+	left: 500px;
+	width:256px;
+	height:64px;
+	background-image:url(palm_tree-128.png);
+	background-size:64px 64px;
+	background-repeat:no-repeat;
+	z-index:100;
+}
+#link4{
+	position: absolute;
+	top: 340px;
+	left: 250px;
+	width:256px;
+	height:64px;
+	background-image:url(palm_tree-128.png);
+	background-size:64px 64px;
+	background-repeat:no-repeat;
+	z-index:100;
+}
+#linkarea1{
+	position: absolute;
+	top: 86px;
+	left: 564px;
+	width:256px;
+	height:64px;
+	visibility:hidden;
+}
+#linkarea2{
+	position: absolute;
+	top: 206px;
+	left: 564px;
+	width:256px;
+	height:64px;
+	visibility:hidden;
+}
+#linkarea3{
+	position: absolute;
+	top: 326px;
+	left: 564px;
+	width:256px;
+	height:64px;
+	visibility:hidden;
+}
+#linkarea4{
+	position: absolute;
+	top: 326px;
+	left: 314px;
+	width:256px;
+	height:64px;
+	visibility:hidden;
+}
+#area{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -400px;
+    margin-top: -250px;
+	width: 800px;
+	height: 500px;
+	background-color: #ffcc00;;
+}
+.logo {
+	position:absolute;
+	top:-45px;
+	right:-225px;
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-style:italic;
+	font-size:60px;
+	color:#F60;
+	margin-top: 250px;
+	opacity:0.5;
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+}
+p {
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-style:italic;
+	line-height:14px;
+	margin: 0 0 0 8px;
+	padding:0;
+	color:#222222;
+}
+/*///MASK///*/
+#mask {
+	position:absolute;
+	left:0;
+	top:0;
+	z-index:9000;
+	background-color:#FC0;
+	display:none;
+}
+#boxes .window {
+	position:fixed;
+	margin: auto;
+	width:640px;
+	display:none;
+	z-index:9999;
+	padding:20px;
+}
+
+#boxes .window p {
+	margin:16px;
+	z-index:9999;
+}
+
+.privacyt {
+	background-color:#F60;
+	display:block;
+	font-size:24px;
+	font-weight:bold;
+	letter-spacing:1px;
+	color:#fff;
+	padding:5px;
+	text-align:center;
+	margin-bottom:10px;
+	z-index:9999;
+}
+#boxes #dialog {
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-size:18px;
+	text-align:left;
+	width:650px; 
+	top:100px;
+	padding:0px;
+	background-color:#fff;
+	margin-top:30px;
+	z-index:9999;
+}
+#boxes #dialog p {
+	line-height:30px;
+}
+
+#boxes #dialog a,#boxes #dialog2 a {color:#fff; text-decoration:none; font-size:18px; font-weight:bold; padding:6px 12px; letter-spacing:2px; background-color:#f60;;margin-top:30px;margin-bottom:30px;  }
+#boxes #dialog a:hover,#boxes #dialog2 a:hover {background-color: #000;}
+</style>
+<script>
+
+// default vars
+var lf = 100;
+var tp = 100;
+var tempY = 0;
+var tempX = 0;
+var moveYoff = 0;
+var moveXoff = 0;
+
+// variables for #area
+var Ytp = 0;
+var Ybt = 440;
+var Xrt = 736;
+var Xlf = 0;
+
+// keeps user from setting another interval
+var moving = false;
+// var for cursor moving left
+var left = false;
+
+// Get mouse or touch XY variables
+function getCursorXY(e) {
+	var a = $('#area').offset();
+	// Calculate offset for centered div
+	moveYoff = Math.round(a.top); 
+	moveXoff = Math.round(a.left);
+	// Calculate location for click XY w/offset for image size
+	tempX = Math.round(e.pageX) - moveXoff - 32; 
+	tempY = Math.round(e.pageY) - moveYoff - 32; 
+	// If user clicks within the div, call moveXY
+	if (moving == false && tempY < Ybt && tempY > Ytp && tempX < Xrt && tempX > Xlf) {
+		moveXY();
+	} 
+	return true;
+}
+
+document.onmousedown = getCursorXY;
+document.touchstart = getCursorXY;
+
+// Move cursor to XY position
+function moveXY(){
+	moving = true;
+	var moveitXY = setInterval(function(){
+		placeSniffer();
+		// If user clicks inside the box
+		if (tempY < Ybt && tempY > Ytp && tempX < Xrt && tempX > Xlf) {	  
+			// Check click distance from cursor loc
+			if (tempX > lf) { // Move RIGHT
+				lf += 1; 
+				$('#hand').css({ "left" : lf+"px" });
+				$('#hand').css({ backgroundImage:"url(running_128r.gif)"});
+				left = false;
+			}
+			if (tempX < lf) { // Move LEFT
+				lf -= 1; 
+				$('#hand').css({ "left" : lf+"px" });
+				$('#hand').css({ backgroundImage:"url(running_128l.gif)"});
+				left = true;
+			} 
+			if (tempY > tp) { // Move UP
+				if (left==true) {
+					tp += 1; 
+					$('#hand').css({ "top" : tp+"px" });
+					$('#hand').css({ backgroundImage:"url(running_128l.gif)"});
+				} else {
+					tp += 1; 
+					$('#hand').css({ "top" : tp+"px" });
+					$('#hand').css({ backgroundImage:"url(running_128r.gif)"});
+				}
+			}
+			if (tempY < tp) { // Move Down
+				if (left==true) {
+					tp -= 1; 
+					$('#hand').css({ "top" : tp+"px" });
+					$('#hand').css({ backgroundImage:"url(running_128l.gif)"});
+				} else {
+					tp -= 1; 
+					$('#hand').css({ "top" : tp+"px" });
+					$('#hand').css({ backgroundImage:"url(running_128r.gif)"});
+				}
+			}
+			// Cursor reaches click XY, cancel
+			if (tempY == tp && tempX == lf) {
+				$('#hand').css({ backgroundImage:"url(running_128.gif)"});
+				clearInterval(moveitXY);
+				moving = false;
+			}
+		// Clicks outside of the box, cancel
+		} else {
+			$('#hand').css({ backgroundImage:"url(running_128.gif)"});
+			clearInterval(moveitXY);
+			moving = false;
+		}
+	},10);
+}
+	
+// Keyboard input with customisable repeat (set to 0 for no key repeat)
+// With a key down, this removes the pause after the first move on a moving object
+//http://stackoverflow.com/questions/3691461/remove-key-press-delay-in-javascript
+function KeyboardController(keys, repeat) {
+    // Lookup of key codes to timer ID, or null for no repeat
+    var timers= {};
+
+    // When key is pressed and we don't already think it's pressed, call the
+    // key action callback and set a timer to generate another one after a delay
+    document.onkeydown= function(event) {
+		//returnKey();
+        var key= (event || window.event).keyCode;
+		
+        if (!(key in keys))
+            return true;
+        if (!(key in timers)) {
+            timers[key]= null;
+            keys[key]();
+            if (repeat!==0)
+                timers[key]= setInterval(keys[key], repeat);
+        }
+		placeSniffer();
+		//returnKey();
+        return false;
+    };
+
+    // Cancel timeout and mark key as released on keyup
+    document.onkeyup= function(event) {
+        var key= (event || window.event).keyCode;
+        if (key in timers) {
+            if (timers[key]!==null)
+                clearInterval(timers[key]);
+            delete timers[key];
+        }
+		// Sets the div to resting state
+		document.getElementById('hand').style.backgroundImage = "url(running_128.gif)";
+    };
+
+    // When window is unfocused we may not get key events. To prevent this
+    // causing a key to 'get stuck down', cancel all held keys
+    window.onblur= function() {
+        for (key in timers)
+            if (timers[key]!==null)
+                clearInterval(timers[key]);
+        timers= {};
+    };
+};
+
+var dir;
+
+// Keyboard commands
+KeyboardController({
+    37: function() { //left
+		if (lf>Xlf){
+			lf -= 1; 
+			$('#hand').css({ "left" : lf+"px" });
+			$('#hand').css({ backgroundImage:"url(running_128l.gif)"}); 
+			dir = 37;
+		}
+	},
+    38: function() { //up
+		if (tp>Ytp){
+			tp -= 1; 
+			$('#hand').css({ "top" : tp+"px" });
+			if (dir==37) { // avoids 'shake' error constantly swapping l and r
+				$('#hand').css({ backgroundImage:"url(running_128l.gif)"});
+			} else {
+				$('#hand').css({ backgroundImage:"url(running_128r.gif)"});
+			}
+			dir = 38;
+		}
+	},
+    39: function() { //right
+		if (lf<Xrt){
+			lf += 1; 
+			$('#hand').css({ "left" : lf+"px" });
+			$('#hand').css({ backgroundImage:"url(running_128r.gif)"});
+			dir = 39;
+		}
+	},
+    40: function() { //down
+		if (tp<Ybt){
+			tp += 1; 
+			$('#hand').css({ "top" : tp+"px" }); 
+			if (dir==37) { // avoids 'shake' error constantly swapping l and r
+				$('#hand').css({ backgroundImage:"url(running_128l.gif)"});
+			} else {
+				$('#hand').css({ backgroundImage:"url(running_128r.gif)"});
+			}
+			dir = 40;
+		}
+	},
+	65: function() { //left A
+		if (lf>Xlf){
+			lf -= 1; 
+			$('#hand').css({ "left" : lf+"px" });
+			$('#hand').css({ backgroundImage:"url(running_128l.gif)"}); 
+			dir = 65;
+		}
+	},
+    87: function() { //up W
+		if (tp>Ytp){
+			tp -= 1; 
+			$('#hand').css({ "top" : tp+"px" }); 
+			if (dir==65) { // avoids 'shake' error constantly swapping l and r
+				$('#hand').css({ backgroundImage:"url(running_128l.gif)"});
+			} else {
+				$('#hand').css({ backgroundImage:"url(running_128r.gif)"});
+			}
+			dir = 87;
+		}
+	},
+    68: function() { //right D
+		if (lf<Xrt){
+			lf += 1; 
+			$('#hand').css({ "left" : lf+"px" }); 
+			$('#hand').css({ backgroundImage:"url(running_128r.gif)"});
+			dir = 68;
+		}
+	},
+    83: function() { //down S
+		if (tp<Ybt){
+			tp += 1; 
+			$('#hand').css({ "top" : tp+"px" });
+			if (dir==65) { // avoids 'shake' error constantly swapping l and r
+				$('#hand').css({ backgroundImage:"url(running_128l.gif)"});
+			} else {
+				$('#hand').css({ backgroundImage:"url(running_128r.gif)"});
+			}
+			dir = 83;
+		}
+	},
+    89: function() { // Y key
+		if (vislink1 == true){
+			$('#linkarea1').children('#key-y').css({ backgroundImage:"url(keys-y-dn.png)"});
+			location.assign("http://www.google.com");
+		}
+		if (vislink2 == true){
+			$('#linkarea2').children('#key-y').css({ backgroundImage:"url(keys-y-dn.png)"});
+			location.assign("http://www.google.com");
+		}
+		if (vislink3 == true){
+			$('#linkarea3').children('#key-y').css({ backgroundImage:"url(keys-y-dn.png)"});
+			location.assign("http://www.google.com");
+		}
+	},
+    78: function() { // N key
+		if (vislink1 == true){
+			$('#linkarea1').children('#key-n').css({ backgroundImage:"url(keys-n-dn.png)"});
+			$('#linkarea1,#link1').css({ 'visibility':'hidden' });
+			vislink1no = true;
+		}
+		if (vislink2 == true){
+			$('#linkarea2').children('#key-n').css({ backgroundImage:"url(keys-n-dn.png)"});
+			$('#linkarea2,#link2').css({ 'visibility':'hidden' });
+			vislink2no = true;
+		}
+		if (vislink3 == true){
+			$('#linkarea3').children('#key-n').css({ backgroundImage:"url(keys-n-dn.png)"});
+			$('#linkarea3,#link3').css({ 'visibility':'hidden' });
+			vislink3no = true;
+		}
+	}
+}, 10);
+
+// for tracking link/layer visibilty 
+var vislink1 = false;
+var vislink2 = false;
+var vislink3 = false;
+var vislink4 = false;
+var vislink1no = false;
+var vislink2no = false;
+var vislink3no = false;
+var vislink4no = false;
+
+// location finder makes link areas visible upon contact
+function placeSniffer(){
+	if (lf>450 && lf<650 && tp>30 && tp<160 && vislink1no == false) {
+		vislink1 = true;
+		$('#linkarea1').css({ 'visibility':'visible' });
+	} else {
+		$('#linkarea1').css({ 'visibility':'hidden' });
+		vislink1 = false;
+	}
+	if (lf>450 && lf<650 && tp>150 && tp<260 && vislink2no == false) {
+		vislink2 = true;
+		$('#linkarea2').css({ 'visibility':'visible' });
+	} else {
+		$('#linkarea2').css({ 'visibility':'hidden' });
+		vislink2 = false;
+	}
+	if (lf>450 && lf<650 && tp>270 && tp<360 && vislink3no == false) {
+		vislink3 = true;
+		$('#linkarea3').css({ 'visibility':'visible' });
+	} else {
+		$('#linkarea3').css({ 'visibility':'hidden' });
+		vislink3 = false;
+	}
+	if (lf>200 && lf<400 && tp>270 && tp<360 && vislink4no == false) {
+		vislink4 = true;
+		$('#linkarea4').css({ 'visibility':'visible' });
+	} else {
+		$('#linkarea4').css({ 'visibility':'hidden' });
+		vislink4 = false;
+	}
+}
+
+function hideMe(id) {
+	$(id).css({ 'visibility':'hidden' });
+	//$(id).fadeOut(800);
+}
+
+function launchWarning() {
+	//url = place;
+	var id = "#dialog";
+	//Get the screen height and width
+	var maskHeight = $(document).height();
+	var maskWidth = $(window).width();
+	//Set heigth and width to mask to fill up the whole screen
+	$("#mask").css({"width":maskWidth,"height":maskHeight});
+	//transition effect		
+	$("#mask").fadeIn(200);	
+	$("#mask").fadeTo("fast",0.8);	
+	//Get the window height and width
+	var winH = $(window).height();
+	var winW = $(window).width();	  
+	//Set the popup window to center
+	$(id).css("top",  winH/2-$(id).height()/3*2);
+	$(id).css("left", winW/2-$(id).width()/2);
+	//transition effect
+	$(id).fadeIn(200); 
+}
+
+$("#mask,.window .close,.window2 .close").click(function () {
+	$("#mask,.window,.window2").hide();
+});
+$(window).resize(function () {
+	var box = $("#boxes .window,#boxes .window2");
+	//Get the screen height and width
+	var maskHeight = $(document).height();
+	var maskWidth = $(window).width();
+	//Set height and width to mask to fill up the whole screen
+	$("#mask").css({"width":maskWidth,"height":maskHeight});   
+	//Get the window height and width
+	var winH = $(window).height();
+	var winW = $(window).width();
+	//Set the popup window to center
+	//box.css("top",  winH/2 - box.height()/2);
+	box.css("left", winW/2 - box.width()/2);
+});
+</script>
+</head>
+<body>
+<div id="area">
+	<span class="logo">the input garden</span>
+	<div id="key-a"></div>
+    <div id="key-s"></div>
+    <div id="key-d"></div>
+    <div id="key-w"></div>
+    <div id="cursor-point"></div>
+    <div id="cursor-hand"></div>
+    <div id="link1"></div>
+    <div id="link2"></div>
+    <div id="link3"></div>
+    <div id="link4"></div>
+    <div id="linkarea1">
+    <p>Fate Browser</p>
+    <p>
+    	<div id="key-y"><a href="http://www.google.com"><img src="keys-blank.png" width=64 height=64 border=0></a></div>
+    	<div id="key-n"><a href="#" onclick="hideMe('#linkarea1,#link1');vislink1no=true"><img src="keys-blank.png" width=64 height=64 border=0></a></div>
+    </p>
+    </div>
+    <div id="linkarea2">
+    <p>Beer Defender</p>
+    <p>
+    	<div id="key-y"><a href="http://www.google.com"><img src="keys-blank.png" width=64 height=64 border=0></a></div>
+    	<div id="key-n"><a href="#" onclick="hideMe('#linkarea2,#link2');vislink2no=true"><img src="keys-blank.png" width=64 height=64 border=0></a></div>
+    </p>
+    </div>
+    <div id="linkarea3">
+    <p>IT Freakout</p>
+    <p>
+    	<div id="key-y"><a href="http://www.google.com"><img src="keys-blank.png" width=64 height=64 border=0></a></div>
+    	<div id="key-n"><a href="#" onclick="hideMe('#linkarea3,#link3');vislink3no=true"><img src="keys-blank.png" width=64 height=64 border=0></a></div>
+    </p>
+    </div>
+    <div id="linkarea4">
+    <p>About</p>
+    <p>
+    	<div id="key-y"><a href="#" onclick="launchWarning();"><img src="keys-blank.png" width=64 height=64 border=0></a></div>
+    	<div id="key-n"><a href="#" onclick="hideMe('#linkarea4,#link4');vislink4no=true"><img src="keys-blank.png" width=64 height=64 border=0></a></div>
+    </p>
+    </div>
+    <div id="hand"></div>
+</div>
+
+<div id="boxes">
+	<div id="dialog" class="window">
+		<span class="privacyt">The Input Garden</span>
+        <p>Do you get tired of visiting websites that have all of the creativity and character of the Men's room at Applebees? I do.</p>
+		<p>The Input Garden is a collection of some of my personal projects and works in progress. Most apps should function properly but some may fail in certain mobile browsers. Be assured; I'm working on achieving 100% coverage but that takes time and testing, so please feel free to contact me with any bugs, and thank you for stopping by!</p>
+        <p>Cahill</p>
+		<p align=center><a href="#" class="close" id="leaving" onclick="hideMe('#boxes,#linkarea4,#link4');vislink4no=true">OK</a></p>
+	</div>
+	<div id="mask" onclick="hideMe('#boxes,#linkarea4,#link4');vislink4no=true"></div>
+</div>
+
+<div id="myDiv" style="position:fixed; bottom:10px; left:10%; right:10%; height:20px; text-align:center; font-family:Georgia, 'Times New Roman', Times, serif;font-size:12px; color:#fff;"><i></i> by <a href=""><i></i></a></div>
+</body>
+</html>
