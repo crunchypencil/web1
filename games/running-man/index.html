@@ -211,6 +211,14 @@ p {
 	padding:0;
 	color:#222222;
 }
+.bottomtext {
+	font-family:Georgia, 'Times New Roman', Times, serif;
+	font-size:12px; 
+	color:#fff;
+}
+.bottomtext a {
+	color:#FC0;
+}
 /*///MASK///*/
 #mask {
 	position:absolute;
@@ -662,21 +670,21 @@ $(window).resize(function () {
     <div id="linkarea1">
     <p>Fate Browser</p>
     <p>
-    	<div id="key-y"><a href="http://www.google.com"><img src="keys-blank.png" width=64 height=64 border=0></a></div>
+    	<div id="key-y"><a href="http://crunchypencil.com/projects/tarot/"><img src="keys-blank.png" width=64 height=64 border=0></a></div>
     	<div id="key-n"><a href="#" onclick="hideMe('#linkarea1,#link1');vislink1no=true"><img src="keys-blank.png" width=64 height=64 border=0></a></div>
     </p>
     </div>
     <div id="linkarea2">
     <p>Beer Defender</p>
     <p>
-    	<div id="key-y"><a href="http://www.google.com"><img src="keys-blank.png" width=64 height=64 border=0></a></div>
+    	<div id="key-y"><a href="http://crunchypencil.com/projects/games/beerdefender/beerdefender6.html"><img src="keys-blank.png" width=64 height=64 border=0></a></div>
     	<div id="key-n"><a href="#" onclick="hideMe('#linkarea2,#link2');vislink2no=true"><img src="keys-blank.png" width=64 height=64 border=0></a></div>
     </p>
     </div>
     <div id="linkarea3">
     <p>IT Freakout</p>
     <p>
-    	<div id="key-y"><a href="http://www.google.com"><img src="keys-blank.png" width=64 height=64 border=0></a></div>
+    	<div id="key-y"><a href="http://crunchypencil.com/projects/games/itfreakout/it-freakout.html"><img src="keys-blank.png" width=64 height=64 border=0></a></div>
     	<div id="key-n"><a href="#" onclick="hideMe('#linkarea3,#link3');vislink3no=true"><img src="keys-blank.png" width=64 height=64 border=0></a></div>
     </p>
     </div>
@@ -701,6 +709,6 @@ $(window).resize(function () {
 	<div id="mask" onclick="hideMe('#boxes,#linkarea4,#link4');vislink4no=true"></div>
 </div>
 
-<div id="myDiv" style="position:fixed; bottom:10px; left:10%; right:10%; height:20px; text-align:center; font-family:Georgia, 'Times New Roman', Times, serif;font-size:12px; color:#fff;"><i></i> by <a href=""><i></i></a></div>
+<div id="myDiv" style="position:fixed; bottom:10px; left:10%; right:10%; height:20px; text-align:center;" class="bottomtext"><i>The Input Garden</i> &nbsp;  &nbsp;by &nbsp; &nbsp;<a href="http://crunchypencil.com"><i>Crunchy Pencil Design</i></a></div>
 </body>
 </html>
