@@ -1,0 +1,275 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Random Room Generator</title>
+<script src="jquery.min.js"></script>
+<link href="rooms.css" rel="stylesheet" type="text/css" />
+<script>
+
+// default variables for #area
+var Ytp = 0;  // top
+var Xrt = 0;  // right
+var Ybt = 0;  // bottom
+var Xlf = 0;  // left
+var Xhf = 0;  // half width var
+var Yhf = 0;  // half height var
+
+// room dimension generator and style executor
+function loadRoom(){
+	Xrt = Math.floor((Math.random()*800)+150);
+	Ybt = Math.floor((Math.random()*500)+150);
+	Xhf = -Xrt/2-32;
+	Yhf = -Ybt/2-32;
+	$("#area").css({ 
+		"width":Xrt+64+"px",
+		"height":Ybt+64+"px",
+		"margin-top":Yhf+"px",
+		"margin-left":Xhf+"px"
+	});
+}
+
+// default vars
+var lf = 100;
+var tp = 100;
+var tempY = 0;
+var tempX = 0;
+var moveYoff = 0;
+var moveXoff = 0;
+
+// keeps user from setting another interval
+var moving = false;
+// var for cursor moving left
+var left = false;
+
+// Get mouse or touch XY variables
+function getCursorXY(e) {
+	var a = $('#area').offset();
+	// Calculate offset for centered div
+	moveYoff = Math.round(a.top); 
+	moveXoff = Math.round(a.left);
+	// Calculate location for click XY w/offset for image size
+	tempX = Math.round(e.pageX) - moveXoff - 32; 
+	tempY = Math.round(e.pageY) - moveYoff - 32; 
+	// If user clicks within the div, call moveXY
+	if (moving == false && tempY < Ybt && tempY > Ytp && tempX < Xrt && tempX > Xlf) {
+		moveXY();
+	} 
+	return true;
+}
+
+document.onmousedown = getCursorXY;
+document.touchstart = getCursorXY;
+
+// Move cursor to XY position according to mouse/touch data
+function moveXY(){
+	moving = true;
+	var moveitXY = setInterval(function(){
+		//placeSniffer();
+		// If user clicks inside the box
+		if (tempY < Ybt && tempY > Ytp && tempX < Xrt && tempX > Xlf) {	  
+			// Check click distance from cursor loc
+			if (tempX > lf) { // Move RIGHT
+				lf += 1; 
+				$('#user').css({ "left" : lf+"px" });
+				$('#user').css({ backgroundImage:"url(running_128r.gif)"});
+				left = false;
+			}
+			if (tempX < lf) { // Move LEFT
+				lf -= 1; 
+				$('#user').css({ "left" : lf+"px" });
+				$('#user').css({ backgroundImage:"url(running_128l.gif)"});
+				left = true;
+			} 
+			if (tempY > tp) { // Move UP
+				if (left==true) {
+					tp += 1; 
+					$('#user').css({ "top" : tp+"px" });
+					$('#user').css({ backgroundImage:"url(running_128l.gif)"});
+				} else {
+					tp += 1; 
+					$('#user').css({ "top" : tp+"px" });
+					$('#user').css({ backgroundImage:"url(running_128r.gif)"});
+				}
+			}
+			if (tempY < tp) { // Move Down
+				if (left==true) {
+					tp -= 1; 
+					$('#user').css({ "top" : tp+"px" });
+					$('#user').css({ backgroundImage:"url(running_128l.gif)"});
+				} else {
+					tp -= 1; 
+					$('#user').css({ "top" : tp+"px" });
+					$('#user').css({ backgroundImage:"url(running_128r.gif)"});
+				}
+			}
+			// Cursor reaches click XY, cancel
+			if (tempY == tp && tempX == lf) {
+				$('#user').css({ backgroundImage:"url(running_128.gif)"});
+				clearInterval(moveitXY);
+				moving = false;
+			}
+		// Clicks outside of the box, cancel
+		} else {
+			$('#user').css({ backgroundImage:"url(running_128.gif)"});
+			clearInterval(moveitXY);
+			moving = false;
+		}
+	},10);
+}
+	
+// Keyboard input with customisable repeat (set to 0 for no key repeat)
+// With a key down, this removes the pause after the first move on a moving object
+function KeyboardController(keys, repeat) {
+    // Lookup of key codes to timer ID, or null for no repeat
+    var timers= {};
+
+    // When key is pressed and we don't already think it's pressed, call the
+    // key action callback and set a timer to generate another one after a delay
+    document.onkeydown= function(event) {
+        var key= (event || window.event).keyCode;
+		
+        if (!(key in keys))
+            return true;
+        if (!(key in timers)) {
+            timers[key]= null;
+            keys[key]();
+            if (repeat!==0)
+                timers[key]= setInterval(keys[key], repeat);
+        }
+		//placeSniffer();
+        return false;
+    };
+
+    // Cancel timeout and mark key as released on keyup
+    document.onkeyup= function(event) {
+        var key= (event || window.event).keyCode;
+        if (key in timers) {
+            if (timers[key]!==null)
+                clearInterval(timers[key]);
+            delete timers[key];
+        }
+		// Sets the div to resting state
+		$('#user').css({ backgroundImage:"url(running_128.gif)"});
+    };
+
+    // When window is unfocused we may not get key events. To prevent this
+    // causing a key to 'get stuck down', cancel all held keys
+    window.onblur= function() {
+        for (key in timers)
+            if (timers[key]!==null)
+                clearInterval(timers[key]);
+        timers= {};
+    };
+};
+
+var dir;
+
+// Keyboard commands
+KeyboardController({
+    37: function() { //left
+		if (lf>Xlf){
+			lf -= 1; 
+			$('#user').css({ "left" : lf+"px" });
+			$('#user').css({ backgroundImage:"url(running_128l.gif)"}); 
+			dir = 37;
+		}
+	},
+    38: function() { //up
+		if (tp>Ytp){
+			tp -= 1; 
+			$('#user').css({ "top" : tp+"px" });
+			if (dir==37) { // avoids 'shake' error constantly swapping l and r
+				$('#user').css({ backgroundImage:"url(running_128l.gif)"});
+			} else {
+				$('#user').css({ backgroundImage:"url(running_128r.gif)"});
+			}
+			dir = 38;
+		}
+	},
+    39: function() { //right
+		if (lf<Xrt){
+			lf += 1; 
+			$('#user').css({ "left" : lf+"px" });
+			$('#user').css({ backgroundImage:"url(running_128r.gif)"});
+			dir = 39;
+		}
+	},
+    40: function() { //down
+		if (tp<Ybt){
+			tp += 1; 
+			$('#user').css({ "top" : tp+"px" }); 
+			if (dir==37) { // avoids 'shake' error constantly swapping l and r
+				$('#user').css({ backgroundImage:"url(running_128l.gif)"});
+			} else {
+				$('#user').css({ backgroundImage:"url(running_128r.gif)"});
+			}
+			dir = 40;
+		}
+	},
+	65: function() { //left A
+		if (lf>Xlf){
+			lf -= 1; 
+			$('#user').css({ "left" : lf+"px" });
+			$('#user').css({ backgroundImage:"url(running_128l.gif)"}); 
+			dir = 65;
+		}
+	},
+    87: function() { //up W
+		if (tp>Ytp){
+			tp -= 1; 
+			$('#user').css({ "top" : tp+"px" }); 
+			if (dir==65) { // avoids 'shake' error constantly swapping l and r
+				$('#user').css({ backgroundImage:"url(running_128l.gif)"});
+			} else {
+				$('#user').css({ backgroundImage:"url(running_128r.gif)"});
+			}
+			dir = 87;
+		}
+	},
+    68: function() { //right D
+		if (lf<Xrt){
+			lf += 1; 
+			$('#user').css({ "left" : lf+"px" }); 
+			$('#user').css({ backgroundImage:"url(running_128r.gif)"});
+			dir = 68;
+		}
+	},
+    83: function() { //down S
+		if (tp<Ybt){
+			tp += 1; 
+			$('#user').css({ "top" : tp+"px" });
+			if (dir==65) { // avoids 'shake' error constantly swapping l and r
+				$('#user').css({ backgroundImage:"url(running_128l.gif)"});
+			} else {
+				$('#user').css({ backgroundImage:"url(running_128r.gif)"});
+			}
+			dir = 83;
+		}
+	}
+}, 10);
+
+</script>
+</head>
+<body onload="loadRoom()">
+<div id="area">
+	<!--<div id="key-a"></div>
+    <div id="key-s"></div>
+    <div id="key-d"></div>
+    <div id="key-w"></div>
+    <div id="cursor-point"></div>
+    <div id="cursor-hand"></div>-->
+    <div id="user"></div>
+</div>
+
+<div id="boxes">
+	<div id="dialog" class="window">
+		<span class="privacyt"></span>
+        <p></p>
+		<p align=center><a href="#" class="close" id="leaving" onclick="hideMe('#boxes,#linkarea4,#link4');vislink4no=true">OK</a></p>
+	</div>
+	<div id="mask" onclick="hideMe('#boxes,#linkarea4,#link4');vislink4no=true"></div>
+</div>
+
+<div id="myDiv" style="position:fixed; bottom:10px; left:10%; right:10%; height:20px; text-align:center" class="bottomtext"><i>Random Room Generator</i> &nbsp; &nbsp;by &nbsp; &nbsp;<a href="http://crunchypencil.com"><i>Crunchy Pencil Design</i></a></div>
+</body>
+</html>
