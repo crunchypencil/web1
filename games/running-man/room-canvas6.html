@@ -1,0 +1,330 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Canvas Maze</title>
+<script src="jquery.min.js"></script>
+<style>
+body{ 
+	margin:0;
+	overflow:hidden;
+	background-image:url(background1.gif);
+	background-repeat:no-repeat;
+	background-color:#000;
+}
+#hand{
+	position: absolute;
+	top: 100px;
+	left: 100px;
+	width:64px;
+	height:64px;
+	background-image:url(running_128.gif);
+	background-size:64px 64px;
+	z-index:1000;
+}
+#key-y{
+	position: relative;
+	float:left;
+	width:64px;
+	height:64px;
+	background-image:url(keys-y-up.png);
+	background-size:64px 64px;
+	z-index:100;
+}
+#key-y:hover{
+	background-image:url(keys-y-dn.png);
+	background-size:64px 64px;
+}
+#key-n{
+	position: relative;
+	float:left;
+	width:64px;
+	height:64px;
+	background-image:url(keys-n-up.png);
+	background-size:64px 64px;
+	z-index:100;
+}
+#key-n:hover{
+	background-image:url(keys-n-dn.png);
+	background-size:64px 64px;
+}
+
+p {
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-style:italic;
+	line-height:14px;
+	margin: 0 0 0 8px;
+	padding:0;
+	color:#222222;
+}
+#area {
+	
+}
+
+</style>
+
+</head>
+
+<body onload="init();">
+
+<div>
+<div id="hand"></div>
+
+</div>
+<canvas id="canvas" width="2000" height="2000" style="position:absolute;top:2000px;left:2000px">
+This text is displayed if your browser does not support HTML5 Canvas.
+</canvas>
+<script type="text/javascript">
+
+var canvas;
+var ctx;
+var dx = 1;  
+var dy = 1;  
+var x = 100;  
+var y = 100;  
+var WIDTH = 2000;
+var HEIGHT = 2000;
+var img = new Image();
+var collided = 0;
+var dir = 0;
+var tempY = 0;
+var tempX = 0;
+var moving = false;
+var left = false;
+
+// Get mouse or touch XY variables
+function getCursorXY(e) {
+	// rounded pageX/Y, centered for 64px cursor
+	tempX = Math.round(e.pageX) - 32; 
+	tempY = Math.round(e.pageY) - 32; 
+	if (moving == false){
+		moveXY();
+	} 
+	return true;
+}
+
+document.onmousedown = getCursorXY;
+document.touchstart = getCursorXY;
+
+// Move cursor to XY position for touch/click
+function moveXY(){
+	moving = true;
+	var moveitXY = setInterval(function(){
+		//placeSniffer();
+		// Check click distance from cursor loc and check each if collided, move x/y
+		if (tempX > x) { // If click is to right move RIGHT
+			$('#hand').css({ "left" : x+"px" });
+			$('#hand').css({ backgroundImage:"url(running_128r.gif)"});
+			left = false;
+			x += dx; //move RIGHT
+			collideCheck();
+			if (collided == 1){
+				$('#hand').css({ backgroundImage:"url(running_128.gif)"});
+				clearInterval(moveitXY);
+				moving = false;
+				x -= dx;
+				collided = 0;
+				return;
+			} 
+		}
+		if (tempX < x) { // If click is to left, move LEFT
+			$('#hand').css({ "left" : x+"px" });
+			$('#hand').css({ backgroundImage:"url(running_128l.gif)"});
+			left = true;
+			x -= dx; //move LEFT
+			collideCheck();
+			if (collided == 1){
+				$('#hand').css({ backgroundImage:"url(running_128.gif)"});
+				clearInterval(moveitXY);
+				moving = false;
+				x += dx;
+				collided = 0;
+				return;
+			}
+		} 
+		if (tempY > y) { // If click is below, move DOWN
+			if (left==true) {
+				$('#hand').css({ "top" : y+"px" });
+				$('#hand').css({ backgroundImage:"url(running_128l.gif)"});
+			} else {
+				$('#hand').css({ "top" : y+"px" });
+				$('#hand').css({ backgroundImage:"url(running_128r.gif)"});
+			}
+			y += dy; //move DOWN
+			collideCheck();
+			if (collided == 1){
+				$('#hand').css({ backgroundImage:"url(running_128.gif)"});
+				clearInterval(moveitXY);
+				moving = false;
+				y -= dy;
+				collided = 0;
+				return;
+			} 
+		}
+		if (tempY < y) { // If click is above, move UP
+			if (left==true) {
+				$('#hand').css({ "top" : y+"px" });
+				$('#hand').css({ backgroundImage:"url(running_128l.gif)"});
+			} else {
+				$('#hand').css({ "top" : y+"px" });
+				$('#hand').css({ backgroundImage:"url(running_128r.gif)"});
+			}
+			y -= dy; //move UP
+			collideCheck();
+			if (collided == 1){
+				$('#hand').css({ backgroundImage:"url(running_128.gif)"});
+				clearInterval(moveitXY);
+				moving = false;
+				y += dy;
+				collided = 0;
+				return;
+			} 
+		}
+		// Cursor reaches click XY, stop
+		if (tempY == y && tempX == x) {
+			$('#hand').css({ backgroundImage:"url(running_128.gif)"});
+			clearInterval(moveitXY);
+			moving = false;
+			return;
+		}
+	},10);
+}
+
+// Keyboard input with customisable repeat (set to 0 for no key repeat)
+function KeyboardController(keys, repeat) {
+    // Lookup of key codes to timer ID, or null for no repeat
+    var timers= {};
+    // When key is pressed and we don't already think it's pressed, call the
+    // key action callback and set a timer to generate another one after a delay
+    document.onkeydown= function(event) {
+		//returnKey();
+        var key= (event || window.event).keyCode;
+		
+        if (!(key in keys))
+            return true;
+        if (!(key in timers)) {
+            timers[key]= null;
+            keys[key]();
+            if (repeat!==0)
+                timers[key]= setInterval(keys[key], repeat);
+        }
+		//placeSniffer();
+		//returnKey();
+        return false;
+    };
+
+    // Cancel timeout and mark key as released on keyup
+    document.onkeyup= function(event) {
+        var key= (event || window.event).keyCode;
+        if (key in timers) {
+            if (timers[key]!==null)
+                clearInterval(timers[key]);
+            delete timers[key];
+        }
+		// Sets the div to resting state
+		$('#hand').css({ backgroundImage:"url(running_128.gif)"});
+    };
+
+    // When window is unfocused we may not get key events. To prevent this
+    // causing a key to 'get stuck down', cancel all held keys
+    window.onblur= function() {
+        for (key in timers)
+            if (timers[key]!==null)
+                clearInterval(timers[key]);
+        timers= {};
+    };
+};
+
+// Keys for keyboard commands
+KeyboardController({
+	65: function() { //left A
+		x -= dx;
+		$('#hand').css({ "left" : x+"px" });
+		$('#hand').css({ backgroundImage:"url(running_128l.gif)"}); 
+		dir = 65;
+		collideCheck();
+		if (collided == 1){
+			x += dx;
+			collided = 0;
+			return;
+		}
+	},
+    87: function() { //up W
+		y -= dy;
+		$('#hand').css({ "top" : y+"px" }); 
+		if (dir==65) { // avoids 'shake' error constantly swapping l and r
+			$('#hand').css({ backgroundImage:"url(running_128l.gif)"});
+		} else {
+			$('#hand').css({ backgroundImage:"url(running_128r.gif)"});
+		}
+		dir = 87;
+		collideCheck();
+		if (collided == 1){
+			y += dy;
+			collided = 0;
+			return;
+		}
+	},
+    68: function() { //right D
+		x += dx;
+		$('#hand').css({ "left" : x+"px" });
+		$('#hand').css({ backgroundImage:"url(running_128r.gif)"});
+		dir = 68;
+		collideCheck();
+		if (collided == 1){
+			x -= dx;
+			collided = 0;
+			return;
+		}
+	},
+    83: function() { //down S
+		y += dy;
+		$('#hand').css({ "top" : y+"px" });
+		if (dir==65) { // avoids 'shake' error constantly swapping l and r
+			$('#hand').css({ backgroundImage:"url(running_128l.gif)"});
+		} else {
+			$('#hand').css({ backgroundImage:"url(running_128r.gif)"});
+		}
+		dir = 83;
+		collideCheck();
+		if (collided == 1){
+			y -= dy;
+			collided = 0;
+			return;
+		}
+	}
+}, 10);
+
+function init() {
+	canvas = document.getElementById("canvas");
+	ctx = canvas.getContext("2d");
+	img.src = "background1.gif";
+	ctx.clearRect(0, 0, WIDTH, HEIGHT);
+	ctx.drawImage(img, 0, 0);
+}
+
+// Collision checker, uses image data to check
+function collideCheck() {
+	var imgd = ctx.getImageData(x, y, 64, 64);
+	var pix = imgd.data;
+	for (var i = 0; n = pix.length, i < n; i += 4) {
+		if (pix[i] == 0) {
+			collided = 1;
+		} 
+	}
+	setFocus();
+}
+
+// Scroll to keep cursor in focus
+function setFocus(){
+	var padding = 300; // Desired page "padding"
+	var tbound = $('#hand').offset().top - $(window).height() + padding;
+	var lbound = $('#hand').offset().left - $(window).width() + padding;
+	$(window).scrollTop(tbound);
+	$(window).scrollLeft(lbound);
+}
+
+</script>
+
+</body>
+</html>
