@@ -22,6 +22,18 @@ body{
 	background-size:64px 64px;
 	z-index:1000;
 }
+#counter{
+	position: fixed;
+	top: 50px;
+	left: 50px;
+	width:64px;
+	height:64px;
+	color:#FC0;
+	font-weight:bold;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:48px;
+	z-index:1000;
+}
 #key-y{
 	position: relative;
 	float:left;
@@ -69,7 +81,7 @@ p {
 
 <div>
 <div id="hand"></div>
-
+<div id="counter"></div>
 </div>
 <canvas id="canvas" width="2000" height="2000" style="position:absolute;top:2000px;left:2000px">
 This text is displayed if your browser does not support HTML5 Canvas.
@@ -323,6 +335,14 @@ function setFocus(){
 	$(window).scrollTop(tbound);
 	$(window).scrollLeft(lbound);
 }
+
+if(typeof(w) == "undefined") {
+    w = new Worker("counter.js");
+}
+
+w.onmessage = function(event){
+    document.getElementById("counter").innerHTML = event.data;
+}; 
 
 </script>
 
