@@ -336,12 +336,13 @@ function setFocus(){
 	$(window).scrollLeft(lbound);
 }
 
+// check for web worker counter.js
 if(typeof(w) == "undefined") {
     w = new Worker("counter.js");
 }
-
+// post message on event
 w.onmessage = function(event){
-    document.getElementById("counter").innerHTML = event.data;
+	$('#counter').html(event.data);
 }; 
 
 </script>

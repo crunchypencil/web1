@@ -7,8 +7,9 @@ function timedCount() {
 		postMessage(j)
 	} else {
 		postMessage(i);
+		clearTimeout(timey);
 	}
-    setTimeout("timedCount()",1000);
+    var timey = setTimeout("timedCount()",1000);
 }
 
 timedCount(); 
