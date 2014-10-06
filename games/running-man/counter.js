@@ -1,4 +1,4 @@
-var i = 11;
+var i = 100;
 var j = "PISS!";
 
 function timedCount() {
