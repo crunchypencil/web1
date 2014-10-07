@@ -35,8 +35,19 @@ body{
 	font-size:48px;
 	z-index:1000;
 }
+#piss{
+	position: fixed;
+	top:-2000px;
+	left:-20px;
+	width:2000px;
+	height:20004px;
+	background-image:url(piss.png);
+	background-repeat:no-repeat;
+	z-index:99;
+	opacity:0.7;
+}
 #key-y{
-	position: relative;
+	position: fixed;
 	float:left;
 	width:64px;
 	height:64px;
@@ -81,6 +92,7 @@ p {
 <body onload="init();">
 
 <div>
+<div id="piss"></div>
 <div id="hand"></div>
 <div id="counter"></div>
 </div>
@@ -344,6 +356,11 @@ if(typeof(w) == "undefined") {
 // post message on event
 w.onmessage = function(event){
 	$('#counter').html(event.data);
+	if ($('#counter').text() == "PISS!"){
+		 //function() {
+			 $( "#piss" ).animate({ "top": "+=600px" }, 2000 );
+		 //};
+	}
 }; 
 
 </script>

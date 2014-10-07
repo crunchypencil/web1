@@ -1,14 +1,14 @@
-var i = 100;
+var i = 10;
 var j = "PISS!";
 
 function timedCount() {
     i = i - 1;
 	if (i<=0) {
-		postMessage(j);
 		clearTimeout(timey);
+		postMessage(j);
+		return;
 	} else {
 		postMessage(i);
-		
 	}
     var timey = setTimeout("timedCount()",1000);
 }
