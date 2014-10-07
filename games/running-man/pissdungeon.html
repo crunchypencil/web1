@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8" />
-<title>Canvas Maze</title>
+<title>PISS DUNGEON</title>
 <script src="jquery.min.js"></script>
 <style>
 body{ 
@@ -44,7 +44,7 @@ body{
 	background-image:url(piss.png);
 	background-repeat:no-repeat;
 	z-index:99;
-	opacity:0.7;
+	opacity:0.5;
 }
 #key-y{
 	position: fixed;
@@ -356,10 +356,8 @@ if(typeof(w) == "undefined") {
 // post message on event
 w.onmessage = function(event){
 	$('#counter').html(event.data);
-	if ($('#counter').text() == "PISS!"){
-		 //function() {
+	if ($('#counter').text() == "PISS!"){ // Drop the piss div
 			 $( "#piss" ).animate({ "top": "+=600px" }, 2000 );
-		 //};
 	}
 }; 
 
