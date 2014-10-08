@@ -110,13 +110,14 @@ var y = 100;
 var WIDTH = 2000;
 var HEIGHT = 2000;
 var img = new Image();
-var collided = 0;
+var collided = 0; // character has collided
 var dir = 0;
 var tempY = 0;
 var tempX = 0;
 var moving = false;
-var left = false;
-setFocus();
+var left = false; // character facing left
+setFocus(); // sets focus on character on refresh
+
 // Get mouse or touch XY variables
 function getCursorXY(e) {
 	// rounded pageX/Y, centered for 64px cursor
@@ -357,7 +358,7 @@ if(typeof(w) == "undefined") {
 w.onmessage = function(event){
 	$('#counter').html(event.data);
 	if ($('#counter').text() == "PISS!"){ // Drop the piss div
-			 $( "#piss" ).animate({ "top": "+=600px" }, 2000 );
+		$( "#piss" ).animate({ "top": "+=600px" }, 2000 );
 	}
 }; 
 
