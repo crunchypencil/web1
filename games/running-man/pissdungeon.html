@@ -6,6 +6,7 @@
 <script src="jquery.min.js"></script>
 <style>
 body{ 
+	cursor:crosshair;
 	margin:0;
 	overflow:hidden;
 	background-image:url(background1.gif);
@@ -72,7 +73,6 @@ body{
 	background-image:url(keys-n-dn.png);
 	background-size:64px 64px;
 }
-
 p {
 	font-family:Georgia, "Times New Roman", Times, serif;
 	font-style:italic;
@@ -84,9 +84,7 @@ p {
 #area {
 	
 }
-
 </style>
-
 </head>
 
 <body onload="init();">
@@ -129,14 +127,15 @@ function getCursorXY(e) {
 	return true;
 }
 
-document.onmousedown = getCursorXY;
-document.touchstart = getCursorXY;
+//document.onmousedown = getCursorXY;
+//document.touchstart = getCursorXY;
+document.onmousemove = getCursorXY; //moves with cursor
+document.touchmove = getCursorXY; //moves with touch
 
 // Move cursor to XY position for touch/click
 function moveXY(){
 	moving = true;
 	var moveitXY = setInterval(function(){
-		//placeSniffer();
 		// Check click distance from cursor loc and check each if collided, move x/y
 		if (tempX > x) { // If click is to right move RIGHT
 			$('#hand').css({ "left" : x+"px" });
@@ -223,7 +222,6 @@ function KeyboardController(keys, repeat) {
     // When key is pressed and we don't already think it's pressed, call the
     // key action callback and set a timer to generate another one after a delay
     document.onkeydown= function(event) {
-		//returnKey();
         var key= (event || window.event).keyCode;
 		
         if (!(key in keys))
@@ -234,8 +232,6 @@ function KeyboardController(keys, repeat) {
             if (repeat!==0)
                 timers[key]= setInterval(keys[key], repeat);
         }
-		//placeSniffer();
-		//returnKey();
         return false;
     };
 
