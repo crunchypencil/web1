@@ -227,7 +227,7 @@ function KeyboardController(keys, repeat) {
         if (!(key in keys))
             return true;
         if (!(key in timers)) {
-			
+			//clearInterval(moveitXY);
             timers[key]= null;
             keys[key]();
             if (repeat!==0)
